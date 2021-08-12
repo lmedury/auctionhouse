@@ -4,5 +4,6 @@ export default {
     INFURA_URL: 'https://ropsten.infura.io/v3/d16dccd89ca04583955a545d137928b8',
     COLORS: {
         BLUE: '#09569E'
-    }
+    },
+    AUCTION_CONTRACT:'0xF8FCCE3241220d217e4aB24a22C8010EEa7aD55E'
 }

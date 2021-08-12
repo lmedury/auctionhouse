@@ -2,16 +2,16 @@ import Constants from './contants';
 import { ipfsAdd } from './Ipfs';
 
 
-export async function getToken () {
-    const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/collections/${Constants.ERC721}/generate_token_id?minter=${Constants.ACCOUNT}`)
+export async function getToken (account) {
+    const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/collections/${Constants.ERC721}/generate_token_id?minter=${account}`)
     .then((res) => res.json());
     let token = res.tokenId;
     return token;
 }
 
-export async function createLazyMint(tokenId) {
-    const path = await ipfsAdd();
-    
+export async function createLazyMint(provider, path, account) {
+    const tokenId = getToken(account);
+
     const lazyMintBody = {
         "@type": "ERC721",
         "contract": `${Constants.ERC721}`,
@@ -19,13 +19,13 @@ export async function createLazyMint(tokenId) {
         "tokenURI": `/ipfs/${path}`,
         "creators": [
             { 
-                account: `${Constants.ACCOUNT}`, 
+                account: account, 
                 value: "10000" 
             }
         ],
         "royalties": [
             { 
-                account: `${Constants.ACCOUNT}`, 
+                account: account, 
                 value: 2000 
             }
         ],
@@ -74,8 +74,17 @@ export async function createLazyMint(tokenId) {
         }
     };
 
-    return ds;
+    const sig = signTypedData(provider, account, ds);
+    const thisStruct = ds.message;
+    thisStruct.signatures = [`${sig.result}`];
+    const uri = thisStruct.tokenURI;
+    delete thisStruct.tokenURI;
+    thisStruct.uri = uri;
 
+    console.log(thisStruct);
+    const result = await putLazyMint(thisStruct);
+    console.log(result);
+    return result;
 }
 
 export async function signTypedData(web3Provider, from, dataStructure) {
