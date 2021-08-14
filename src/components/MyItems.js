@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Card, Image, Button } from 'react-bootstrap';
+import { Card, Image, Button, Col, Row } from 'react-bootstrap';
 import constants from '../constants';
 
 export default function MyItems(props) {
@@ -50,11 +50,15 @@ export default function MyItems(props) {
     
 
     return (
-        <div style={{marginLeft:'30%'}}>
+        <div className="text-center" style={{marginTop:50}}>
+            <h3>My NFTs</h3>
+            <Row>
             {nfts.map((item) => 
-                <div key={item.token} style={{textAlign:'left'}} >
+                <Col lg={6}>
 
-                  <Card style={{ width: '40vw', marginTop: 20}}>
+                <div key={item.token} style={{textAlign:'left', marginLeft:'10%'}} >
+
+                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20}}>
                     <Card.Body>
                       <div style={{width:'50%', display:'inline-block'}}>
                           <Image src={item.imageUrl} style={{width: 300, height: 300}}></Image>
@@ -74,8 +78,13 @@ export default function MyItems(props) {
                       
                     </Card.Body>
                   </Card>
-                </div>
+
+                    </div>
+                </Col>
+                
+                
             )}
+            </Row>
         </div>
         
     )

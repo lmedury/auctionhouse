@@ -61,7 +61,7 @@ export default function CreateNFT(props) {
         doc.external_url = filePath;
         const docHash = await ipfs.add(JSON.stringify(doc));
         console.log(docHash.path);
-        
+        console.log(props.address); 
         try{
             const item = await props.sdk?.nft.mintLazy({
                 '@type': 'ERC721', // type of NFT to mint

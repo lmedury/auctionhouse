@@ -11,7 +11,7 @@ export default function (props) {
             <div style={{marginLeft:'55%', display:'inline', justifyContent:'space-between'}}>
                 <Button variant="warning" onClick={() => props.changeRoute('MyItems')}>My Items</Button>
                 <Button variant="warning" style={{marginLeft:10}} onClick={() => props.changeRoute('Create')}>Create NFT</Button>   
-                <Button variant="warning" style={{marginLeft:10}}>Auction NFT</Button>   
+                <Button variant="warning" style={{marginLeft:10}} onClick={() => props.changeRoute('List')}>Auctions</Button>   
                 <Button variant="warning" style={{marginLeft:10}}>Transfer NFT</Button>      
             </div>
             

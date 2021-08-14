@@ -16,6 +16,7 @@ import { Button } from 'react-bootstrap';
 import MyItems from './components/MyItems';
 import CreateNFT from './components/CreateNFT';
 import Auction from './components/Auction';
+import ListAuctions from './components/ListAuctions';
 
 const Web3 = require('web3');
 
@@ -28,7 +29,7 @@ function App() {
   const [address, setAddress] = useState('');
   const [metamask, setMetamask] = useState(false);
   const [sdk, setSdk] = useState();
-  const [component, setComponent] = useState('Auction');
+  const [component, setComponent] = useState('MyItems');
   const [itemForSale, setItemForSale] = useState({});
   const [createOrderForm, setCreateOrderForm] = useState({
     contract: '',
@@ -135,6 +136,9 @@ function App() {
   }
   else if(component === 'Auction'){
     content = <Auction item={itemForSale} web3={web3} />
+  }
+  else if(component === 'List'){
+    content = <ListAuctions />
   }
 
   
