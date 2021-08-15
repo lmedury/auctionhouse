@@ -138,7 +138,7 @@ function App() {
     content = <Auction item={itemForSale} web3={web3} />
   }
   else if(component === 'List'){
-    content = <ListAuctions />
+    content = <ListAuctions address={address} />
   }
 
   

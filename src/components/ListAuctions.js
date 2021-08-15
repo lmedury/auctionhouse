@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Card, Image, Button, Row, Col, Form, Alert } from 'react-bootstrap';
 import constants from '../constants';
-import { listAuctions, getTimedAuctions } from '../ethereum/web3';
+import { listAuctions, getTimedAuctions, bidOnTimedAuction } from '../ethereum/web3';
 
 export default function ListAuctions(props){
     
@@ -9,6 +9,7 @@ export default function ListAuctions(props){
     const [timedAuctionsLoaded, setTimedAuctionsLoaded] = useState(false);
     const [auctionCount, setAuctionCount] = useState({});
     const [timedAuctions, setTimedAuctions] = useState([]);
+    const [bid, setBid] = useState();
 
     async function loadCount(){
         const counts = await listAuctions();
@@ -22,7 +23,41 @@ export default function ListAuctions(props){
     }
     async function loadTimedAuctions(){
         const auctions = await getTimedAuctions();
-        setTimedAuctions(auctions);
+        
+        for(let i=0; i<auctions.length; i++){
+            const token = auctions[i][0];
+            let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${constants.ERC721}:${token}/meta`)
+            .then((res) => res.json());
+            
+            meta.token = token;
+            for(let key in meta.image) {
+                for(let url in meta.image[key]){
+                    const imageUrl = meta.image[key][url];
+                    
+                    if(imageUrl.split('/')[0] == 'ipfs:'){
+                        const hash = imageUrl.split('/')[3];
+                        meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
+                    }
+                    else{
+                        meta.imageUrl = imageUrl;
+                    }
+                    meta.owner = auctions[i][1];
+                    meta.reservePrice = auctions[i][2];
+                    let sec = auctions[i][3];
+                    let d = new Date(0);
+                    d.setUTCMilliseconds(sec);     
+                    d=d.toString();               
+                    meta.deadline = d;
+                    meta.highestBidder = auctions[i][4];
+                    meta.highestBid = auctions[i][5];
+                    meta.isOpen = auctions[i][6];
+                    meta.id = i+1;
+                }
+                break;
+            }
+            setTimedAuctions(currentState => [...currentState, meta]); 
+        }
+        
     }
     
     if(!countLoaded){
@@ -30,6 +65,7 @@ export default function ListAuctions(props){
     }   
     if(!timedAuctionsLoaded){
         loadTimedAuctions();
+        setTimedAuctionsLoaded(true); 
     }
     
     return(
@@ -78,6 +114,71 @@ export default function ListAuctions(props){
                 </Col>
             </Row>
             <h3 style={{textAlign:'left', marginTop:30}}>Timed Auctions</h3>
+            <Row>
+            {timedAuctions.map((item) => 
+                <Col lg={6} key={item.token}>
+
+                <div  style={{textAlign:'left'}} >
+
+                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20}}>
+                    <Card.Body>
+                      <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
+                          <img src={item.imageUrl} style={{width:330, height:350}}></img>
+                      </div>
+                      <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
+                          {item.isOpen ? <h5 style={{fontFamily:'Montserrat', color:'green'}}>
+                            Item is still available for bidding
+                          </h5>
+                           : <h5 style={{fontFamily:'Montserrat', color:'red'}}>
+                            The bidding is closed for this item
+                          </h5> }
+                          <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}</h3>
+                          
+                          <h5 style={{fontFamily:'Montserrat'}}>
+                            Description: {item.description}
+                          </h5>
+                          
+                          <h5 style={{fontFamily:'Montserrat'}}>Image:  <a href={item.imageUrl} target="_blank">Link</a></h5>
+                          <h5 style={{fontFamily:'Montserrat'}}>
+                            Reserve Price: {item.reservePrice} wei
+                          </h5>
+                          <h5 style={{fontFamily:'Montserrat'}}>
+                            Highest Bid: {item.highestBid} wei
+                          </h5>
+                          
+                          
+                          <h5 style={{fontFamily:'Montserrat'}}>
+                            Bidding Closes At: 
+                          </h5> 
+                          <p><strong>{item.deadline}</strong></p>
+                          <div>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Control type="number" placeholder="Your Bid" onChange={(e) => setBid(e.target.value)} disabled={!item.isOpen} />
+                            </Form.Group>
+                          </div>
+                          {item.highestBidder === props.address ? 
+                            <p style={{color:'green', marginTop:10}}>You are currently the highest bidder</p>
+                          : null}
+                          
+                      </div>   
+                      
+                    </Card.Body>
+                    <Card.Footer>
+                        <div style={{display:'inline'}}>
+                            <p style={{display:'inline'}}>Creator: {item.owner}</p>
+                            <Button variant="success" style={{marginLeft:'10%', display:'inline', width:200}} disabled={!item.isOpen} onClick={async () => {
+                                const txn = await bidOnTimedAuction(item.id, bid);
+                            }}>Bid</Button>  
+                        </div>
+                    </Card.Footer>
+                  </Card>
+
+                    </div>
+                </Col>
+                
+                
+            )}
+            </Row>
 
         </div>
         

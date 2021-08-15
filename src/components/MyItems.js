@@ -54,22 +54,22 @@ export default function MyItems(props) {
             <h3>My NFTs</h3>
             <Row>
             {nfts.map((item) => 
-                <Col lg={6}>
+                <Col lg={6} key={item.token}>
 
-                <div key={item.token} style={{textAlign:'left', marginLeft:'10%'}} >
+                <div  style={{textAlign:'left', marginLeft:'10%'}} >
 
                   <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20}}>
                     <Card.Body>
-                      <div style={{width:'50%', display:'inline-block'}}>
+                      <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <Image src={item.imageUrl} style={{width: 300, height: 300}}></Image>
                       </div>
-                      <div style={{width:'50%', display:'inline-block'}}>
+                      <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}</h3>
                           
                           <h5 style={{fontFamily:'Montserrat'}}>
                             Description: {item.description}
                           </h5>
-                          <div style={{marginTop:50}}>
+                          <div style={{marginTop:200}}>
                           <a href={item.imageUrl} target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
                           <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 20}}>Auction This Item</Button>
                           

@@ -51,11 +51,19 @@ export async function getTimedAuctions(){
     for(let i=1; i<=count.timed; i++){
         try{
             const auction = await contract.methods.getTimedAuctions(i).call();
-            auctions.push(auctions)
+            auctions.push(auction)
         }catch(err){
             console.log(err);
         }
     }
-    return auctions;
-    
+    return auctions; 
+}
+
+export async function bidOnTimedAuction(id, price){
+    try{
+        const txn = await contract.methods.bidOnTimedAuction(id).send({from: toAddress(address), gas: 400000, value:web3.utils.toWei(price,'wei')});
+        return({txn:txn, success:true})
+    }catch(err){
+        return({err:err, success:false})
+    }
 }
