@@ -67,3 +67,12 @@ export async function bidOnTimedAuction(id, price){
         return({err:err, success:false})
     }
 }
+
+export async function closeTimedAuction(id){
+    try{
+        const txn = await contract.methods.closeTimedAuction(id).send({from: toAddress(address), gas: 400000});
+        return({txn:txn, success:true})
+    }catch(err){
+        return({err:err, success:false})
+    }
+}

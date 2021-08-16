@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import { Card, Image, Button, Row, Col, Form, Alert } from 'react-bootstrap';
+import React, {useState} from 'react';
+import { Card,  Button, Row, Col, Form, Modal, Alert } from 'react-bootstrap';
 import constants from '../constants';
-import { listAuctions, getTimedAuctions, bidOnTimedAuction } from '../ethereum/web3';
+import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } from '../ethereum/web3';
+import loader from '../assets/img/loader.svg';
 
 export default function ListAuctions(props){
     
@@ -10,6 +11,16 @@ export default function ListAuctions(props){
     const [auctionCount, setAuctionCount] = useState({});
     const [timedAuctions, setTimedAuctions] = useState([]);
     const [bid, setBid] = useState();
+    const [show, setShow] = useState(false);
+    const [auctionItem, setAuctionItem] = useState();
+    const [loading, setLoading] = useState(false);
+    const [sold, setSold] = useState(false);
+    
+    
+    function handleClose(){
+        if(show) setShow(false);
+        else setShow(true);
+    }
 
     async function loadCount(){
         const counts = await listAuctions();
@@ -52,6 +63,7 @@ export default function ListAuctions(props){
                     meta.highestBid = auctions[i][5];
                     meta.isOpen = auctions[i][6];
                     meta.id = i+1;
+                    
                 }
                 break;
             }
@@ -153,12 +165,16 @@ export default function ListAuctions(props){
                           <p><strong>{item.deadline}</strong></p>
                           <div>
                             <Form.Group controlId="formBasicEmail">
-                                <Form.Control type="number" placeholder="Your Bid" onChange={(e) => setBid(e.target.value)} disabled={!item.isOpen} />
+                                <Form.Control type="number" placeholder="Your Bid" onChange={(e) => setBid(e.target.value)} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} />
                             </Form.Group>
                           </div>
                           {item.highestBidder === props.address ? 
                             <p style={{color:'green', marginTop:10}}>You are currently the highest bidder</p>
                           : null}
+                          {item.isOpen ? null
+                           : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>
+                            Winner: {item.highestBidder}
+                          </h5> }
                           
                       </div>   
                       
@@ -166,9 +182,16 @@ export default function ListAuctions(props){
                     <Card.Footer>
                         <div style={{display:'inline'}}>
                             <p style={{display:'inline'}}>Creator: {item.owner}</p>
-                            <Button variant="success" style={{marginLeft:'10%', display:'inline', width:200}} disabled={!item.isOpen} onClick={async () => {
+                            {item.owner === props.address ? 
+                            <Button variant="danger" style={{marginLeft:'10%', display:'inline', width:150}} disabled={!item.isOpen} onClick={async () => {
+                                handleClose();
+                                setAuctionItem(item);
+                            }}>Close Auction</Button>
+                            : 
+                            <Button variant="success" style={{marginLeft:'10%', display:'inline', width:150}} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} onClick={async () => {
                                 const txn = await bidOnTimedAuction(item.id, bid);
-                            }}>Bid</Button>  
+                            }}>{item.highestBidder === props.address ? 'Increase Bid': 'Bid'}</Button>  }
+                            
                         </div>
                     </Card.Footer>
                   </Card>
@@ -177,8 +200,58 @@ export default function ListAuctions(props){
                 </Col>
                 
                 
+                
             )}
             </Row>
+            <Modal show={show} size="lg" onHide={handleClose}>
+                <Modal.Header >
+                <Modal.Title>Closing Auction</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                {sold ? <Alert variant="success" className="text-center">
+                    You have successfully closed the auction!
+                </Alert> : null }
+                
+                {!loading && auctionItem ? 
+                    
+                    <Row>
+                        <Col lg={6}>
+                            <img src={auctionItem.imageUrl} style={{width:350}}></img>
+                        </Col>
+                        <Col lg={6}>
+                            <h3 style={{fontFamily:'Montserrat'}}><strong>{auctionItem.name}</strong></h3>
+                            <h6 style={{fontFamily:'Montserrat'}}>{auctionItem.description}</h6>
+                            <h5 style={{fontFamily:'Montserrat', marginTop:120, color:'green'}}><strong>Final Bid: {auctionItem.highestBid} wei</strong></h5>
+                        </Col>
+                        
+                    </Row>
+                    
+                : 
+                    <div className="text-center">
+                        <img src={loader} style={{width:200}}></img>
+                        <p><strong>Processing...</strong></p>
+                    </div>
+                }
+                
+    
+                </Modal.Body>
+                <Modal.Footer>
+                
+                <Button variant="secondary" onClick={handleClose}>
+                    Back
+                </Button>
+                <Button variant="danger" onClick={async () => {
+                    setLoading(true);
+                    const res = await closeTimedAuction(auctionItem.id);
+                    if(res.success){
+                        setLoading(false);
+                        setSold(true);
+                    }
+                }}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
 
         </div>
         
