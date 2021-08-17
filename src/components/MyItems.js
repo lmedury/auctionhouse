@@ -9,7 +9,7 @@ export default function MyItems(props) {
     const [nfts, setNfts] = useState([]);
     const [timedAuctionsLoaded, setTimedAuctionsLoaded] = useState(false);
     const [timedAuctions, setTimedAuctions] = useState([]);
-    const address = '0xDb9F310D544b58322aBA88881f6bAA4F7B4AD666';
+    const address = props.address;
 
     async function getItems(){
         const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner?owner=${address}`)
@@ -54,7 +54,11 @@ export default function MyItems(props) {
     async function loadTimedAuctions(){
         const auctions = await getTimedAuctions();
         for(let i=0; i<auctions.length; i++){
-            setTimedAuctions(currentState => [...currentState, auctions[i][0]]);
+            let token = {
+                tokenId : auctions[i][0],
+                isOpen : auctions[i][6]
+            }
+            setTimedAuctions(currentState => [...currentState, token]);
         }
         
     }
@@ -64,12 +68,26 @@ export default function MyItems(props) {
         loadTimedAuctions();
         setTimedAuctionsLoaded(true); 
     }
+
+    function checkIfAuctioned(nft){
+        let status = "";
+        timedAuctions.forEach(function({tokenId, isOpen}){
+            if(nft === tokenId && isOpen){
+                status='Auctioned'
+            }
+            else if(nft === tokenId && !isOpen){
+                status = 'Sold'
+            }
+        })
+        
+        return status;
+        
+    }
     
 
     return (
         <div className="text-center" style={{marginTop:50}}>
             <h3>My NFTs</h3>
-            {console.log(timedAuctions)}
             <Row>
             {nfts.map((item) => 
                 <Col lg={6} key={item.token}>
@@ -87,10 +105,14 @@ export default function MyItems(props) {
                           <h5 style={{fontFamily:'Montserrat'}}>
                             Description: {item.description}
                           </h5>
-                          {timedAuctions.indexOf(item.token.split(':')[1])!= -1 ? <p style={{color:'green'}}>Available On Auction</p> : null}
+                          
+                          {checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' ? <p style={{color:'green'}}>Available On Auction</p> : null}
+                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <p style={{color:'red'}}>Item Sold</p> : null}
                           <div style={{marginTop:200}}>
                           <a href={item.imageUrl} target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
-                          <Button variant="success" disabled={timedAuctions.indexOf(item.token.split(':')[1])!= -1} onClick={() => props.auctionItem(item)} style={{marginLeft: 20}}>Auction This Item</Button>
+                          <Button variant="success" disabled={
+                              checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) == 'Sold'
+                          } onClick={() => props.auctionItem(item)} style={{marginLeft: 20}}>Auction This Item</Button>
                           
                           </div>
                       </div>   

@@ -17,6 +17,8 @@ import MyItems from './components/MyItems';
 import CreateNFT from './components/CreateNFT';
 import Auction from './components/Auction';
 import ListAuctions from './components/ListAuctions';
+import Home from './components/Home';
+import Footer from './components/Footer';
 
 const Web3 = require('web3');
 
@@ -29,7 +31,7 @@ function App() {
   const [address, setAddress] = useState('');
   const [metamask, setMetamask] = useState(false);
   const [sdk, setSdk] = useState();
-  const [component, setComponent] = useState('MyItems');
+  const [component, setComponent] = useState('Home');
   const [itemForSale, setItemForSale] = useState({});
   const [createOrderForm, setCreateOrderForm] = useState({
     contract: '',
@@ -140,12 +142,19 @@ function App() {
   else if(component === 'List'){
     content = <ListAuctions address={address} />
   }
+  else if(component === 'Home'){
+    content = <Home changeRoute={setRoute} />
+  }
 
   
   return (
     <div>
       <Header changeRoute={setRoute} />
       {content}
+      <div style={{marginTop:100}}>
+        <Footer></Footer>
+      </div>
+      
     </div>
     
   );

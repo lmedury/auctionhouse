@@ -109,7 +109,7 @@ export default function CreateNFT(props) {
                                     <Form.Control as="textarea" rows={3} placeholder="Description" onChange={(e) => setDescription(e.target.value)}  />
                                 </Form.Group>
                             </Form>
-                            <Button onClick={create}>Create</Button>
+                            <Button variant="success" onClick={create}>Create</Button>
                         </Col>
                     </Row>
                 :
