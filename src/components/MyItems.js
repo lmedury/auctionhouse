@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Card, Image, Button, Col, Row } from 'react-bootstrap';
 import constants from '../constants';
 import { listAuctions, getTimedAuctions} from '../ethereum/web3';
+import auctioned from '../assets/img/auctioned.png';
 
 export default function MyItems(props) {
     
@@ -86,7 +87,7 @@ export default function MyItems(props) {
     
 
     return (
-        <div className="text-center" style={{marginTop:50}}>
+        <div className="text-center">
             <h3>My NFTs</h3>
             <Row>
             {nfts.map((item) => 
@@ -100,14 +101,16 @@ export default function MyItems(props) {
                           <Image src={item.imageUrl} style={{width: 300, height: 300}}></Image>
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}</h3>
-                          
+                          <h3 style={{fontFamily:'Montserrat', display:'inline'}}>Title: {item.name}</h3>
+                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src="http://assets.stickpng.com/images/5a04b8549cf05203c4b603af.png"></img>: null}
+                          {checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={auctioned}></img> : null}
+
                           <h5 style={{fontFamily:'Montserrat'}}>
                             Description: {item.description}
                           </h5>
                           
-                          {checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' ? <p style={{color:'green'}}>Available On Auction</p> : null}
-                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <p style={{color:'red'}}>Item Sold</p> : null}
+                          
+                          
                           <div style={{marginTop:200}}>
                           <a href={item.imageUrl} target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
                           <Button variant="success" disabled={

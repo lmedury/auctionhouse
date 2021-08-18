@@ -19,6 +19,7 @@ import Auction from './components/Auction';
 import ListAuctions from './components/ListAuctions';
 import Home from './components/Home';
 import Footer from './components/Footer';
+import PurchasedNFTs from './components/PurchasedNFTs';
 
 const Web3 = require('web3');
 
@@ -144,6 +145,9 @@ function App() {
   }
   else if(component === 'Home'){
     content = <Home changeRoute={setRoute} />
+  }
+  else if(component === 'Purchased'){
+    content = <PurchasedNFTs address = {address} />
   }
 
   

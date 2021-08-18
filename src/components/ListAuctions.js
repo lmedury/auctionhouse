@@ -81,7 +81,7 @@ export default function ListAuctions(props){
     }
     
     return(
-        <div className="text-center" style={{marginTop:50, marginLeft:50}}>
+        <div className="text-center" style={{marginLeft:50}}>
             <h2>NFT Auctions</h2>
             <Row style={{marginTop:50, marginRight:50}}>
                 <Col lg={3}>
@@ -134,6 +134,10 @@ export default function ListAuctions(props){
 
                   <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20}}>
                     <Card.Body>
+                    {item.isOpen ? null
+                    : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>
+                    Winner: {item.highestBidder} <img style={{width:30, marginLeft:50}} src="http://assets.stickpng.com/images/580b585b2edbce24c47b2af2.png"></img>
+                    </h5> }
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <img src={item.imageUrl} style={{width:330, height:350}}></img>
                       </div>
@@ -171,12 +175,10 @@ export default function ListAuctions(props){
                           {item.highestBidder === props.address ? 
                             <p style={{color:'green', marginTop:10}}>You are currently the highest bidder</p>
                           : null}
-                          {item.isOpen ? null
-                           : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>
-                            Winner: {item.highestBidder}
-                          </h5> }
+                          
                           
                       </div>   
+                      
                       
                     </Card.Body>
                     <Card.Footer>

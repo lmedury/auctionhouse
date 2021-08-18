@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import constants from '../constants';
+import React from 'react';
 import styles from '../styles.js';
 import logo from '../assets/img/AuctionHouse.png';
 import { Button } from 'react-bootstrap';
@@ -12,7 +11,7 @@ export default function (props) {
                 <Button variant="warning" onClick={() => props.changeRoute('MyItems')}>My Items</Button>
                 <Button variant="warning" style={{marginLeft:10}} onClick={() => props.changeRoute('Create')}>Create NFT</Button>   
                 <Button variant="warning" style={{marginLeft:10}} onClick={() => props.changeRoute('List')}>Auctions</Button>   
-                <Button variant="warning" style={{marginLeft:10}}>Transfer NFT</Button>      
+                <Button variant="warning" style={{marginLeft:10}} onClick={() => props.changeRoute('Purchased')}>Purchased NFTs</Button>      
             </div>
             
         </div>

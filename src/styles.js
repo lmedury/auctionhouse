@@ -5,7 +5,8 @@ export default {
         backgroundColor:constants.COLORS.BLUE, 
         color:'white', 
         height: 100,
-        textAlign: 'left'
+        textAlign: 'left',
+        marginBottom: 30
     }
     
 }

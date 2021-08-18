@@ -81,7 +81,7 @@ export default function CreateNFT(props) {
     return (
         <Container>
             <Row>
-                <div className="text-center" style={{alignContent:'center', marginTop:30}}>
+                <div className="text-center" style={{alignContent:'center'}}>
                 <div style={{marginBottom:100}}>
                     <h3 style={{marginBottom: 50, display:'inline'}}>List your NFT on </h3><Image src={rarible} style={{display:'inline', width:50}} />
                 </div>
