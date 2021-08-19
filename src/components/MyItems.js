@@ -3,6 +3,7 @@ import { Card, Image, Button, Col, Row } from 'react-bootstrap';
 import constants from '../constants';
 import { listAuctions, getTimedAuctions} from '../ethereum/web3';
 import auctioned from '../assets/img/auctioned.png';
+import sold from '../assets/img/Sold.png'
 
 export default function MyItems(props) {
     
@@ -11,6 +12,7 @@ export default function MyItems(props) {
     const [timedAuctionsLoaded, setTimedAuctionsLoaded] = useState(false);
     const [timedAuctions, setTimedAuctions] = useState([]);
     const address = props.address;
+
 
     async function getItems(){
         const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner?owner=${address}`)
@@ -84,8 +86,8 @@ export default function MyItems(props) {
         return status;
         
     }
-    
 
+    
     return (
         <div className="text-center">
             <h3>My NFTs</h3>
@@ -102,7 +104,7 @@ export default function MyItems(props) {
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <h3 style={{fontFamily:'Montserrat', display:'inline'}}>Title: {item.name}</h3>
-                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src="http://assets.stickpng.com/images/5a04b8549cf05203c4b603af.png"></img>: null}
+                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={sold}></img>: null}
                           {checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={auctioned}></img> : null}
 
                           <h5 style={{fontFamily:'Montserrat'}}>
@@ -113,9 +115,12 @@ export default function MyItems(props) {
                           
                           <div style={{marginTop:200}}>
                           <a href={item.imageUrl} target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
-                          <Button variant="success" disabled={
-                              checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) == 'Sold'
-                          } onClick={() => props.auctionItem(item)} style={{marginLeft: 20}}>Auction This Item</Button>
+                          {
+                            (checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) == 'Sold') ? null :                           
+                          <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 20}}>Auction This Item</Button> }
+
+                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? 
+                          <Button variant="danger" onClick={() => props.createSellOrder(item)} style={{marginLeft: 20}}>Create Sell Order</Button> : null }
                           
                           </div>
                       </div>   

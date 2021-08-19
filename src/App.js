@@ -20,6 +20,7 @@ import ListAuctions from './components/ListAuctions';
 import Home from './components/Home';
 import Footer from './components/Footer';
 import PurchasedNFTs from './components/PurchasedNFTs';
+import SellNFT from './components/SellNFT';
 
 const Web3 = require('web3');
 
@@ -55,12 +56,16 @@ function App() {
             })
             
           });
+          
         } catch(error){
           console.log('Denied');
         }
       }
       setMetamask(true);
     }
+    window.ethereum.on('accountsChanged', function(accounts){
+        setAddress(accounts[0]);
+    })
     
   });
 
@@ -131,8 +136,13 @@ function App() {
     setComponent('Auction');
   }
 
+  function putForSale(item){
+    setItemForSale(item);
+    setComponent('Sale')
+  }
+
   if(component === 'MyItems') {
-    content = <MyItems address={address} auctionItem={putForAuction}/>
+    content = <MyItems address={address} auctionItem={putForAuction} createSellOrder={putForSale}/>
   }
   else if(component === 'Create') {
     content = <CreateNFT address={address} sdk={sdk} web3={web3}/>
@@ -147,7 +157,10 @@ function App() {
     content = <Home changeRoute={setRoute} />
   }
   else if(component === 'Purchased'){
-    content = <PurchasedNFTs address = {address} />
+    content = <PurchasedNFTs address = {address} sdk={sdk} />
+  }
+  else if(component === 'Sale'){
+    content = <SellNFT address = {address} item={itemForSale} sdk={sdk} web3={web3} />
   }
 
   

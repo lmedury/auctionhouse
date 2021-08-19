@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import {Col, Container, Row, Image, Form, Card, Modal} from 'react-bootstrap';
 import constants from "../constants";
 import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } from '../ethereum/web3';
+import sold from '../assets/img/Sold.png';
 
 export default function PurchasedNFTs(props){
 
@@ -11,6 +12,14 @@ export default function PurchasedNFTs(props){
     const [timedAuctionsLoaded, setTimedAuctionsLoaded] = useState(false);
     const [auctionCount, setAuctionCount] = useState({});
     const [timedAuctions, setTimedAuctions] = useState([]);
+    const [sellOrder, setOrderInformation] = useState({});
+
+    const [show, setShow] = useState(false);
+    
+    function handleClose(){
+        if(show) setShow(false);
+        else setShow(true);
+    }
 
     async function loadCount(){
         const counts = await listAuctions();
@@ -70,11 +79,35 @@ export default function PurchasedNFTs(props){
     if(!timedAuctionsLoaded){
         loadTimedAuctions();
         setTimedAuctionsLoaded(true); 
-}
+    }
+
+    async function claim(){
+        
+        console.log(props.sdk.order);
+        await props.sdk.order.fill(sellOrder, {amount: parseInt(1)}).then(a => a.runAll());
+        
+    }
 
     return (
         <div className="text-center">
             <h2>NFTs Purchased Through Auction House</h2>
+            <Modal show={show} size="lg" onHide={handleClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Sell Order Information</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><textarea cols="75" rows="20" onChange={(e) => setOrderInformation(JSON.parse(e.target.value))}></textarea></Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="success" onClick={() => {
+                    claim();
+                    handleClose();
+                }}>
+                    Claim
+                </Button>
+                </Modal.Footer>
+            </Modal>
             
             <Row style={{marginLeft:50}}>
             {timedAuctions.map((item) => 
@@ -90,7 +123,7 @@ export default function PurchasedNFTs(props){
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           
-                          <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}<img style={{width:30, marginLeft:30}} src="http://assets.stickpng.com/images/580b585b2edbce24c47b2af2.png"></img></h3>
+                          <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}<img style={{width:80, marginLeft:10}} src={sold}></img></h3>
                           
                           <h5 style={{fontFamily:'Montserrat', marginTop:30}}>
                             Description: {item.description}
@@ -102,6 +135,8 @@ export default function PurchasedNFTs(props){
                           <h5 style={{fontFamily:'Montserrat', marginTop:30}}>
                             You purchased for: <strong>{item.highestBid}</strong> wei
                           </h5>
+                          
+                          {!true ? <Button variant="success" style={{width:'100%'}} onClick={handleClose}>Claim NFT</Button> : null}
                           
                     
                       </div>   

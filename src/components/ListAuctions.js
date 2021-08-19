@@ -3,6 +3,7 @@ import { Card,  Button, Row, Col, Form, Modal, Alert } from 'react-bootstrap';
 import constants from '../constants';
 import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } from '../ethereum/web3';
 import loader from '../assets/img/loader.svg';
+import soldicon from '../assets/img/Sold.png';
 
 export default function ListAuctions(props){
     
@@ -136,7 +137,7 @@ export default function ListAuctions(props){
                     <Card.Body>
                     {item.isOpen ? null
                     : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>
-                    Winner: {item.highestBidder} <img style={{width:30, marginLeft:50}} src="http://assets.stickpng.com/images/580b585b2edbce24c47b2af2.png"></img>
+                    Winner: {item.highestBidder} <img style={{width:80, marginLeft:30}} src={soldicon}></img>
                     </h5> }
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <img src={item.imageUrl} style={{width:330, height:350}}></img>
