@@ -4,6 +4,7 @@ import constants from '../constants';
 import { listAuctions, getTimedAuctions} from '../ethereum/web3';
 import auctioned from '../assets/img/auctioned.png';
 import sold from '../assets/img/Sold.png'
+import '../App.css'
 
 export default function MyItems(props) {
     
@@ -89,7 +90,7 @@ export default function MyItems(props) {
 
     
     return (
-        <div className="text-center">
+        <div className="text-center" style={{overflowX:'hidden'}}>
             <h3>My NFTs</h3>
             <Row>
             {nfts.map((item) => 
@@ -97,16 +98,21 @@ export default function MyItems(props) {
                 
                 <div  style={{textAlign:'left', marginLeft:'10%'}} >
 
-                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20}}>
+                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20,
+                    borderColor:constants.COLORS.ORANGE, borderWidth:3
+                    
+                    }}>
                     <Card.Body>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <Image src={item.imageUrl} style={{width: 300, height: 300}}></Image>
+                          <Image src={item.imageUrl} style={{width: 300, height: 300, borderRadius:10}}></Image>
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <h3 style={{fontFamily:'Montserrat', display:'inline'}}>Title: {item.name}</h3>
                           {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={sold}></img>: null}
                           {checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={auctioned}></img> : null}
-
+                          
+                         
+                          
                           <h5 style={{fontFamily:'Montserrat'}}>
                             Description: {item.description}
                           </h5>
@@ -117,10 +123,10 @@ export default function MyItems(props) {
                           <a href={item.imageUrl} target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
                           {
                             (checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) == 'Sold') ? null :                           
-                          <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 20}}>Auction This Item</Button> }
+                          <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 5}}>Auction This Item</Button> }
 
                           {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? 
-                          <Button variant="danger" onClick={() => props.createSellOrder(item)} style={{marginLeft: 20}}>Create Sell Order</Button> : null }
+                          <Button variant="danger" onClick={() => props.createSellOrder(item)} style={{marginLeft: 5}}>Create Sell Order</Button> : null }
                           
                           </div>
                       </div>   

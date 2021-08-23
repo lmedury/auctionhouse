@@ -5,7 +5,8 @@ export default {
     INFURA_URL: 'https://ropsten.infura.io/v3/d16dccd89ca04583955a545d137928b8',
     COLORS: {
         BLUE: '#09569E',
-        GREY: '#F0F0F0'
+        GREY: '#F0F0F0',
+        ORANGE: '#EB9C1C'
     },
     AUCTION_CONTRACT:'0x2245d0d9eD596c0396211DD110F6fc7956dF7C29',
 

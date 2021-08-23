@@ -89,7 +89,7 @@ export default function PurchasedNFTs(props){
     }
 
     return (
-        <div className="text-center">
+        <div className="text-center" style={{overflowX:'hidden'}}>
             <h2>NFTs Purchased Through Auction House</h2>
             <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -115,7 +115,7 @@ export default function PurchasedNFTs(props){
 
                 <div  style={{textAlign:'left'}} >
 
-                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20}}>
+                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:'green', borderWidth:5}}>
                     <Card.Body>
                       
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
@@ -123,7 +123,7 @@ export default function PurchasedNFTs(props){
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           
-                          <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}<img style={{width:80, marginLeft:10}} src={sold}></img></h3>
+                          <h3 style={{fontFamily:'Montserrat'}}>Title: {item.name}</h3>
                           
                           <h5 style={{fontFamily:'Montserrat', marginTop:30}}>
                             Description: {item.description}
@@ -145,7 +145,7 @@ export default function PurchasedNFTs(props){
                     <Card.Footer>
                         <div style={{display:'inline'}}>
                             <p style={{display:'inline'}}>Creator: {item.owner}</p>
-                            <a target="_blank" href={item.imageUrl}><Button variant="warning" style={{marginLeft:100}}>View Image on IPFS</Button></a>
+                            <a target="_blank" href={item.imageUrl}><Button variant="warning" style={{marginLeft:60}}>View Image on IPFS</Button></a>
                         </div>
                     </Card.Footer>
                   </Card>

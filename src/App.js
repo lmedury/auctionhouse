@@ -165,9 +165,10 @@ function App() {
 
   
   return (
-    <div>
+    <div style={{fontFamily:'Montserrat'}}>
       <Header changeRoute={setRoute} />
       {content}
+      
       <div style={{marginTop:100}}>
         <Footer></Footer>
       </div>

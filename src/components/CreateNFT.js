@@ -6,6 +6,8 @@ import constants from "../constants";
 import rarible from '../assets/img/rarible.png';
 import { createLazyMint } from "../rarible/LazyMint";
 import { toAddress } from "@rarible/types";
+import ipfsImage from '../assets/img/ipfs.png';
+import metamask from '../assets/img/metamask.svg';
 
 const ipfsAPI = require('ipfs-http-client');
 //const ipfs = ipfsAPI({host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
@@ -82,7 +84,7 @@ export default function CreateNFT(props) {
         <Container>
             <Row>
                 <div className="text-center" style={{alignContent:'center'}}>
-                <div style={{marginBottom:100}}>
+                <div style={{marginBottom:50}}>
                     <h3 style={{marginBottom: 50, display:'inline'}}>List your NFT on </h3><Image src={rarible} style={{display:'inline', width:50}} />
                 </div>
                     {fileLoaded ? 
@@ -114,15 +116,43 @@ export default function CreateNFT(props) {
                     </Row>
                 :
                 <Form.Group controlId="formFile" className="mb-3">
-                    <div style={{textAlign:'left', marginTop:50}}>
-                        <h6 style={{fontFamily:'Montserrat'}}>Select your art here:</h6>
+                    <div style={{textAlign:'left'}}>
+                        <h3>How is an NFT Created?</h3>
+                        <Row className="text-center" style={{marginTop:30, fontFamily:'Montserrat'}}>
+                            <Col lg="4">
+                                <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>   
+                                    <h5><strong>Upload Art</strong></h5>
+                                    <img src={ipfsImage} style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
+                                    <p>The art image you select is initially uploaded to IPFS, a Decentralized Peer-to-peer file storage system
+                                        
+                                    </p>
+                                </Card>
+                            </Col>
+                            <Col lg={{span:"4"}} >
+                                <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>    
+                                    <h5><strong>Set Title and Description</strong></h5>    
+                                    <img src={rarible} style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
+                                    <p>Give your Art a cool name and description. Be as creative and descriptive as possible! This NFT will be listed on <strong>Rarible</strong>.</p>
+                                </Card>
+                            </Col>
+                            <Col lg={{span:"4"}}>
+                                <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                                    <h5><strong>Sign Mint721 Transaction</strong></h5>
+                                    <img src={metamask} style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
+                                    <p>With Lazy Minting, you're essentially deferring the blockchain transaction costs to mint an NFT until a buyer purchases your NFT.
+                                        This is especially useful if you're unsure whether your NFT will be sold or not.
+                                    </p>
+                                </Card>
+                            </Col>
+                        </Row>
+                        <h6 style={{fontFamily:'Montserrat', marginTop:50}}><strong>Get started by selecting your art here:</strong></h6>
                         <Form.Control type="file" onChange={uploadFile}/>
                     </div>
                     
                 </Form.Group> }
                 
                 <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
+                    <Modal.Header>
                     <Modal.Title>Congratulations!</Modal.Title>
                     </Modal.Header>
                     <div style={{textAlign:'center'}}>

@@ -30,37 +30,37 @@ export default function Home(props) {
 
     return (
         <div className="text-center" style={{marginTop:50}}>
-            <h2>Welcome To Auction House!</h2>
-            <div style={{marginTop: 60, marginLeft:100, marginRight:100}}>
-                <h5 style={{textAlign:'left', marginBottom:30}}>In Auction house:</h5>
+            <h2><strong>Welcome To Auction House!</strong></h2>
+            <div style={{marginTop: 30, marginLeft:100, marginRight:100}}>
+                <h5 style={{textAlign:'left', marginBottom:30}}><strong>In Auction house:</strong></h5>
                 <Row>
-                    <Col lg="3">
-                        <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left'}}>
+                    <Col lg="4" md="12" sm="12">
+                        <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:120,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <div style={{marginLeft:30}}>
-                                <h2 style={{display:'inline'}}>NFTs Minted</h2>
-                                <img src={nfttoken} style={{width:100, marginLeft:70}}></img>
-                                <h5>56</h5>
+                                <h2 style={{display:'inline'}}><strong>56</strong> NFTs Minted</h2>
+                                <img src={nfttoken} style={{width:'20%', marginLeft:'30%'}}></img>
+                                
                             </div>
                             
                             
                         </Card>
                     </Col>
-                    <Col lg={{span:"3", offset:"1"}}>
-                        <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left'}}>
+                    <Col lg={{span:"4"}} md="12">
+                        <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:120,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <div style={{marginLeft:30}}>
-                                <h2 style={{display:'inline'}}>NFTs Auctioned</h2>
-                                <img src={auctionicon} style={{width:80, marginLeft:50}}></img>
-                                <h5 style={{marginTop:30}}>20</h5>
+                                <h2 style={{display:'inline'}}><strong>20</strong> NFTs Auctioned</h2>
+                                <img src={auctionicon} style={{width:'20%', marginLeft:'20%'}}></img>
+                                
                             </div>
                             
                         </Card>
                     </Col>
-                    <Col lg={{span:"3", offset:"1"}}>
-                        <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left'}}>
+                    <Col lg={{span:"4"}} md="12">
+                        <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:120,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <div style={{marginLeft:30}}>
-                                <h2 style={{display:'inline'}}>NFTs Sold</h2>
-                                <img src={soldicon} style={{width:100, marginLeft:100}}></img>
-                                <h5 style={{marginTop:30}}>12</h5>
+                                <h2 style={{display:'inline'}}><strong>12</strong> NFTs Sold</h2>
+                                <img src={soldicon} style={{width:'20%', marginLeft:'40%'}}></img>
+                                
                             </div>
                             
                         </Card>
@@ -69,12 +69,12 @@ export default function Home(props) {
             </div>
 
             <div style={{marginTop: 60, marginLeft:100, marginRight:100}}>
-                <h5 style={{textAlign:'left', marginBottom:30}}>With Auction House, you can:</h5>
+                <h5 style={{textAlign:'left', marginBottom:30}}><strong>With Auction House, you can:</strong></h5>
                 <Row>
                     <Col lg="4">
-                        <Card style={{backgroundColor:constants.COLORS.GREY, height:380}}>
+                        <Card style={{backgroundColor:constants.COLORS.GREY, height:380,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <Card.Title style={{marginTop:20}}>
-                                Mint an NFT on Rarible Protocol
+                                <strong>Mint an NFT on Rarible Protocol</strong>
                             </Card.Title>
                             <Card.Body>
                                 <img src={nfts} style={{width:'35%', marginRight:20}}></img><h1 style={{display:'inline'}}>+</h1><img src={rarible} style={{width:'20%',marginLeft:20}}></img>
@@ -86,9 +86,9 @@ export default function Home(props) {
                         </Card>
                     </Col>
                     <Col lg="4">
-                        <Card style={{backgroundColor:constants.COLORS.GREY, height:380}}>
+                        <Card style={{backgroundColor:constants.COLORS.GREY, height:380,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <Card.Title style={{marginTop:20}}>
-                                Put your NFT on Auction
+                                <strong>Put your NFT on Auction</strong>
                             </Card.Title>
                             <Card.Body>
                                 <img src={auctioned} style={{width:'40%'}}></img>
@@ -100,13 +100,13 @@ export default function Home(props) {
                         </Card>
                     </Col>
                     <Col lg="4">
-                        <Card style={{backgroundColor:constants.COLORS.GREY, height:380}}>
+                        <Card style={{backgroundColor:constants.COLORS.GREY, height:380,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <Card.Title style={{marginTop:20}}>
-                                Transfer NFT
+                                <strong>Transfer NFT</strong>
                             </Card.Title>
                             <Card.Body>
                                 <img src={transfer} style={{width:'40%', backgroundColor:constants.COLORS.GREY}}></img>
-                                <p style={{marginTop:10}}>Users can transfer their Non-fungible tokens to any Ethereum address after the auction, or just a gift! The transfer is powered and secured by the Rarible Protocol</p>
+                                <p style={{marginTop:10}}>Users can transfer their Non-fungible tokens to any Ethereum address after the auction, or just as a gift! The transfer is powered and secured by the Rarible Protocol.</p>
                             </Card.Body>
                             <Card.Footer>
                                 <Button style={{backgroundColor:constants.COLORS.BLUE}} onClick={() => props.changeRoute('List')}>Get Started!</Button>
