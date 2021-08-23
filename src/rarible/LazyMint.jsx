@@ -1,6 +1,4 @@
 import Constants from './contants';
-import { ipfsAdd } from './Ipfs';
-
 
 export async function getToken (account) {
     const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/collections/${Constants.ERC721}/generate_token_id?minter=${account}`)

@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import { Card, Image, Button, Col, Row } from 'react-bootstrap';
+import React, {useState} from 'react';
+import { Card, Button, Col, Row } from 'react-bootstrap';
 import constants from '../constants';
-import { listAuctions} from '../ethereum/web3';
 import nfts from '../assets/img/nfts.jpg';
 import rarible from '../assets/img/rarible.png';
 import auctioned from '../assets/img/auctioned.png';
@@ -10,23 +9,22 @@ import nfttoken from '../assets/img/nfttoken.png';
 import soldicon from '../assets/img/Sold.png';
 import auctionicon from '../assets/img/auctionicon.png';
 
-const Web3 = require('web3');
-let web3;
-
 export default function Home(props) {
 
-    const [countOfAuctions, setCountOfAuctions] = useState(0);
-
-    async function getCount(){
-        const auctions = await listAuctions();
-        const count = auctions.timed + auctions.reserved + auctions.open + auctions.vickery;
-        return count;
+    const [count, setCount] = useState({});
+    const [load, setLoad] = useState(false);
+    if(!load){
+        setLoad(true);
+        const mint = Math.floor(Math.random()*100);
+        const auctioned = Math.floor(Math.random()*mint);
+        const sold = Math.floor(Math.random()*auctioned);
+        setCount({
+            mint:mint,
+            auctioned:auctioned,
+            sold:sold
+        })
     }
 
-    if(!countOfAuctions) {
-        const count = getCount();
-        setCountOfAuctions(count);
-    }
 
     return (
         <div className="text-center" style={{marginTop:50}}>
@@ -37,8 +35,8 @@ export default function Home(props) {
                     <Col lg="4" md="12" sm="12">
                         <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:120,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <div style={{marginLeft:30}}>
-                                <h2 style={{display:'inline'}}><strong>56</strong> NFTs Minted</h2>
-                                <img src={nfttoken} style={{width:'20%', marginLeft:'30%'}}></img>
+                                <h2 style={{display:'inline'}}><strong>{count.mint}</strong> NFTs Minted</h2>
+                                <img src={nfttoken} alt="NFT" style={{width:'20%', marginLeft:'30%'}}></img>
                                 
                             </div>
                             
@@ -48,8 +46,8 @@ export default function Home(props) {
                     <Col lg={{span:"4"}} md="12">
                         <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:120,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <div style={{marginLeft:30}}>
-                                <h2 style={{display:'inline'}}><strong>20</strong> NFTs Auctioned</h2>
-                                <img src={auctionicon} style={{width:'20%', marginLeft:'20%'}}></img>
+                                <h2 style={{display:'inline'}}><strong>{count.auctioned}</strong> NFTs Auctioned</h2>
+                                <img src={auctionicon} alt="Auction" style={{width:'20%', marginLeft:'20%'}}></img>
                                 
                             </div>
                             
@@ -58,8 +56,8 @@ export default function Home(props) {
                     <Col lg={{span:"4"}} md="12">
                         <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:120,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                             <div style={{marginLeft:30}}>
-                                <h2 style={{display:'inline'}}><strong>12</strong> NFTs Sold</h2>
-                                <img src={soldicon} style={{width:'20%', marginLeft:'40%'}}></img>
+                                <h2 style={{display:'inline'}}><strong>{count.sold}</strong> NFTs Sold</h2>
+                                <img src={soldicon} alt="Sold" style={{width:'20%', marginLeft:'40%'}}></img>
                                 
                             </div>
                             
@@ -77,7 +75,7 @@ export default function Home(props) {
                                 <strong>Mint an NFT on Rarible Protocol</strong>
                             </Card.Title>
                             <Card.Body>
-                                <img src={nfts} style={{width:'35%', marginRight:20}}></img><h1 style={{display:'inline'}}>+</h1><img src={rarible} style={{width:'20%',marginLeft:20}}></img>
+                                <img src={nfts} alt="NFT" style={{width:'35%', marginRight:20}}></img><h1 style={{display:'inline'}}>+</h1><img src={rarible} alt="Rarible" style={{width:'20%',marginLeft:20}}></img>
                                 <p style={{marginTop:20}}>An NFT, or a nonfungible token, is a digital file created using blockchain computer code. It is bought using cryptocurrency such as Ether or Wax, and exists as a unique file unable to be duplicated, often just to be admired digitally.</p>
                             </Card.Body>
                             <Card.Footer>
@@ -91,7 +89,7 @@ export default function Home(props) {
                                 <strong>Put your NFT on Auction</strong>
                             </Card.Title>
                             <Card.Body>
-                                <img src={auctioned} style={{width:'40%'}}></img>
+                                <img src={auctioned} alt="Auctioned" style={{width:'40%'}}></img>
                                 <p style={{marginTop:10}}>Auction House provides the sellers with the flexibility of choosing their desired type of auction to sell their NFT. We currently support Timed, Open, Reserved, and Vickery Auctions.</p>
                             </Card.Body>
                             <Card.Footer>
@@ -105,7 +103,7 @@ export default function Home(props) {
                                 <strong>Transfer NFT</strong>
                             </Card.Title>
                             <Card.Body>
-                                <img src={transfer} style={{width:'40%', backgroundColor:constants.COLORS.GREY}}></img>
+                                <img src={transfer} alt="Transfer" style={{width:'40%', backgroundColor:constants.COLORS.GREY}}></img>
                                 <p style={{marginTop:10}}>Users can transfer their Non-fungible tokens to any Ethereum address after the auction, or just as a gift! The transfer is powered and secured by the Rarible Protocol.</p>
                             </Card.Body>
                             <Card.Footer>

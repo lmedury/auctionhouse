@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Card, Image, Button, Col, Row } from 'react-bootstrap';
 import constants from '../constants';
-import { listAuctions, getTimedAuctions} from '../ethereum/web3';
+import {getTimedAuctions} from '../ethereum/web3';
 import auctioned from '../assets/img/auctioned.png';
 import sold from '../assets/img/Sold.png'
 import '../App.css'
@@ -33,7 +33,7 @@ export default function MyItems(props) {
                 for(let url in meta.image[key]){
                     const imageUrl = meta.image[key][url];
                     
-                    if(imageUrl.split('/')[0] == 'ipfs:'){
+                    if(imageUrl.split('/')[0] === 'ipfs:'){
                         const hash = imageUrl.split('/')[3];
                         meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
                     }
@@ -108,8 +108,8 @@ export default function MyItems(props) {
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           <h3 style={{fontFamily:'Montserrat', display:'inline'}}>Title: {item.name}</h3>
-                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={sold}></img>: null}
-                          {checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={auctioned}></img> : null}
+                          {checkIfAuctioned(item.token.split(':')[1]) === 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={sold} alt="Sold"></img>: null}
+                          {checkIfAuctioned(item.token.split(':')[1]) === 'Auctioned' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={auctioned} alt="Auctioned"></img> : null}
                           
                          
                           
@@ -120,12 +120,12 @@ export default function MyItems(props) {
                           
                           
                           <div style={{marginTop:200}}>
-                          <a href={item.imageUrl} target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
+                          <a href={item.imageUrl} rel="noreferrer" target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
                           {
-                            (checkIfAuctioned(item.token.split(':')[1]) == 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) == 'Sold') ? null :                           
+                            (checkIfAuctioned(item.token.split(':')[1]) === 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) === 'Sold') ? null :                           
                           <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 5}}>Auction This Item</Button> }
 
-                          {checkIfAuctioned(item.token.split(':')[1]) == 'Sold' ? 
+                          {checkIfAuctioned(item.token.split(':')[1]) === 'Sold' ? 
                           <Button variant="danger" onClick={() => props.createSellOrder(item)} style={{marginLeft: 5}}>Create Sell Order</Button> : null }
                           
                           </div>

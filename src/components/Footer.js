@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import constants from '../constants';
 
 export default function Footer(){

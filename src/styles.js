@@ -1,6 +1,6 @@
 import constants from "./constants"
 
-export default {
+const STYLES = {
     HEADER : {
         backgroundColor:constants.COLORS.BLUE, 
         color:'white', 
@@ -10,3 +10,5 @@ export default {
     }
     
 }
+
+export default STYLES;

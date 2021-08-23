@@ -3,7 +3,7 @@ import styles from '../styles.js';
 import logo from '../assets/img/AuctionHouse.png';
 import { Button } from 'react-bootstrap';
 
-export default function (props) {
+export default function Header(props) {
 
     const [itemState, setItemState] = useState(false);
     const [createState, setCreateState] = useState(false);
@@ -13,7 +13,7 @@ export default function (props) {
 
     return (
         <div style={styles.HEADER}>
-            <img src={logo} onClick={() => {
+            <img src={logo} alt="Auction House" onClick={() => {
                 setItemState(false);
                 setCreateState(false);
                 setAuctionState(false);
@@ -23,16 +23,16 @@ export default function (props) {
             }} style={{width:250, marginLeft:30}}></img>
             <div style={{marginLeft:'55%', display:'inline', justifyContent:'space-between'}}>
                 {itemState ? <Button variant="warning">My Items</Button> :
-                <a href="#">
+                <a href="/#" style={{textDecoration:'none'}}>
                 <p style={{color:'white', display:'inline'}} onClick={() => {
                     setItemState(true);
                     setCreateState(false);
                     setAuctionState(false);
                     setPurchasedState(false);
                     props.changeRoute('MyItems')
-                }}>My Items</p></a> }
+                }}>My NFTs</p></a> }
                 {createState ? <Button variant="warning" style={{marginLeft:10}} >Create NFT</Button>  : 
-                <a href="#">
+                <a href="/#" style={{textDecoration:'none'}}>
                 <p style={{color:'white', display:'inline', marginLeft:30}} onClick={() => {
                     setItemState(false);
                     setCreateState(true);
@@ -41,7 +41,7 @@ export default function (props) {
                     props.changeRoute('Create');
                 }}>Create NFT</p></a>}
                 {auctionState ? <Button variant="warning" style={{marginLeft:10}}>Auctions</Button>  : 
-                <a href="#">
+                <a href="/#" style={{textDecoration:'none'}}>
                 <p style={{color:'white', display:'inline', marginLeft:30}} onClick={() => {
                     setItemState(false);
                     setCreateState(false);
@@ -51,7 +51,7 @@ export default function (props) {
                 }}>Auctions</p></a>
                 }
                 {purchasedState ? <Button variant="warning" style={{marginLeft:10}} >Purchased NFTs</Button> :
-                <a href="#">
+                <a href="/#" style={{textDecoration:'none'}}>
                 <p style={{color:'white', display:'inline', marginLeft:30}} onClick={() => {
                     setItemState(false);
                     setCreateState(false);

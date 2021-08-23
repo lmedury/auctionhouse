@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Card, Image, Button, Row, Col, Form, Alert } from 'react-bootstrap';
 import constants from '../constants';
 import createTimedAuction from '../ethereum/web3';
@@ -14,11 +14,11 @@ export default function Auction(props) {
     const [loading, setLoading] = useState(false);
    
     return(
-        <div className="text-center" style={{marginTop:50}}>
+        <div className="text-center" style={{marginTop:50, overflowX:'hidden'}}>
             <h2>Auction your NFT</h2>
             {loading ? 
             <div style={{marginTop:100}}>
-                <img src={loader} style={{width:200}}></img>
+                <img src={loader} alt="Loading" style={{width:200}}></img>
                 <h3>Processing...</h3>
             </div> : null}
             

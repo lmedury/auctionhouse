@@ -4,6 +4,7 @@ import constants from '../constants';
 import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } from '../ethereum/web3';
 import loader from '../assets/img/loader.svg';
 import soldicon from '../assets/img/Sold.png';
+import likes from '../assets/img/likes.png';
 
 export default function ListAuctions(props){
     
@@ -33,6 +34,7 @@ export default function ListAuctions(props){
         });
         setCountLoaded(true);
     }
+
     async function loadTimedAuctions(){
         const auctions = await getTimedAuctions();
         
@@ -46,7 +48,7 @@ export default function ListAuctions(props){
                 for(let url in meta.image[key]){
                     const imageUrl = meta.image[key][url];
                     
-                    if(imageUrl.split('/')[0] == 'ipfs:'){
+                    if(imageUrl.split('/')[0] === 'ipfs:'){
                         const hash = imageUrl.split('/')[3];
                         meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
                     }
@@ -64,6 +66,7 @@ export default function ListAuctions(props){
                     meta.highestBid = auctions[i][5];
                     meta.isOpen = auctions[i][6];
                     meta.id = i+1;
+                    meta.likes = Math.floor(Math.random()*10);
                     
                 }
                 break;
@@ -82,7 +85,7 @@ export default function ListAuctions(props){
     }
     
     return(
-        <div className="text-center" style={{marginLeft:50, overflowX:'hidden'}}>
+        <div className="text-center" style={{marginLeft:100, marginRight:100, overflowX:'hidden'}}>
             <h2><strong>NFT Auctions</strong></h2>
             <Row style={{marginTop:50, marginRight:50}}>
                 <Col lg={3}>
@@ -129,18 +132,18 @@ export default function ListAuctions(props){
             <h3 style={{textAlign:'left', marginTop:30}}>Timed Auctions</h3>
             <Row>
             {timedAuctions.map((item) => 
-                <Col lg={6} key={item.token}>
+                <Col lg={{span:6}} key={item.token}>
 
                 <div  style={{textAlign:'left'}} >
 
-                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                  <Card style={{width:'40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                     <Card.Body>
                     {item.isOpen ? null
                     : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>
-                    Winner: {item.highestBidder} <img style={{width:80, marginLeft:30}} src={soldicon}></img>
+                    Winner: {item.highestBidder} <img style={{width:80, marginLeft:30}} alt="Sold" src={soldicon}></img>
                     </h5> }
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <img src={item.imageUrl} style={{width:330, height:350}}></img>
+                          <img src={item.imageUrl} alt={item.name} style={{width:330, height:350, borderRadius:10}}></img>
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           {item.isOpen ? <h5 style={{fontFamily:'Montserrat', color:'green'}}>
@@ -155,7 +158,7 @@ export default function ListAuctions(props){
                             Description: {item.description}
                           </h5>
                           
-                          <h5 style={{fontFamily:'Montserrat'}}>Image:  <a href={item.imageUrl} target="_blank">Link</a></h5>
+                          <h5 style={{fontFamily:'Montserrat'}}>Image:  <a href={item.imageUrl} rel="noreferrer" target="_blank">Link</a></h5>
                           <h5 style={{fontFamily:'Montserrat'}}>
                             Reserve Price: {item.reservePrice} wei
                           </h5>
@@ -184,15 +187,16 @@ export default function ListAuctions(props){
                     </Card.Body>
                     <Card.Footer>
                         <div style={{display:'inline'}}>
-                            <p style={{display:'inline'}}>Creator: {item.owner}</p>
+                            <p style={{display:'inline'}}>Creator: <a target="_blank" rel="noreferrer" href={`https://ropsten.etherscan.io/address/${item.owner}`}>{item.owner}</a></p>
+                            <p style={{display:'inline', marginLeft:15}}><img src={likes} alt="Likes" style={{display:'inline', width:30, marginRight:5}}></img>{item.likes}</p>
                             {item.owner === props.address ? 
-                            <Button variant="danger" style={{marginLeft:'10%', display:'inline', width:150}} disabled={!item.isOpen} onClick={async () => {
+                            <Button variant="danger" style={{marginLeft:20, display:'inline', width:150}} disabled={!item.isOpen} onClick={async () => {
                                 handleClose();
                                 setAuctionItem(item);
                             }}>Close Auction</Button>
                             : 
-                            <Button variant="success" style={{marginLeft:'10%', display:'inline', width:150}} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} onClick={async () => {
-                                const txn = await bidOnTimedAuction(item.id, bid);
+                            <Button variant="success" style={{marginLeft:40, display:'inline', width:150}} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} onClick={async () => {
+                                await bidOnTimedAuction(item.id, bid);
                             }}>{item.highestBidder === props.address ? 'Increase Bid': 'Bid'}</Button>  }
                             
                         </div>
@@ -219,7 +223,7 @@ export default function ListAuctions(props){
                     
                     <Row>
                         <Col lg={6}>
-                            <img src={auctionItem.imageUrl} style={{width:350}}></img>
+                            <img src={auctionItem.imageUrl} alt={auctionItem.name} style={{width:350}}></img>
                         </Col>
                         <Col lg={6}>
                             <h3 style={{fontFamily:'Montserrat'}}><strong>{auctionItem.name}</strong></h3>
@@ -231,7 +235,7 @@ export default function ListAuctions(props){
                     
                 : 
                     <div className="text-center">
-                        <img src={loader} style={{width:200}}></img>
+                        <img src={loader} alt="Loading" style={{width:200}}></img>
                         <p><strong>Processing...</strong></p>
                     </div>
                 }

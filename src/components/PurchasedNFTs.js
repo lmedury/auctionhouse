@@ -1,16 +1,14 @@
-import React, { useCallback, useState } from "react";
+import React, {useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
-import {Col, Container, Row, Image, Form, Card, Modal} from 'react-bootstrap';
+import {Col, Row, Card, Modal} from 'react-bootstrap';
 import constants from "../constants";
-import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } from '../ethereum/web3';
-import sold from '../assets/img/Sold.png';
+import {getTimedAuctions} from '../ethereum/web3';
+
 
 export default function PurchasedNFTs(props){
 
-    const [countLoaded, setCountLoaded] = useState(false);
     const [timedAuctionsLoaded, setTimedAuctionsLoaded] = useState(false);
-    const [auctionCount, setAuctionCount] = useState({});
     const [timedAuctions, setTimedAuctions] = useState([]);
     const [sellOrder, setOrderInformation] = useState({});
 
@@ -21,22 +19,12 @@ export default function PurchasedNFTs(props){
         else setShow(true);
     }
 
-    async function loadCount(){
-        const counts = await listAuctions();
-        setAuctionCount({
-            timed: counts.timed,
-            reserved: counts.reserved,
-            open: counts.open,
-            vickery: counts.vickery
-        });
-        setCountLoaded(true);
-    }
     async function loadTimedAuctions(){
         const auctions = await getTimedAuctions();
         
         for(let i=0; i<auctions.length; i++){
             const token = auctions[i][0];
-            if(auctions[i][4]!=props.address || auctions[i][6] == true) continue;
+            if(auctions[i][4]!==props.address || auctions[i][6] === true) continue;
             
             let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${constants.ERC721}:${token}/meta`)
             .then((res) => res.json());
@@ -46,7 +34,7 @@ export default function PurchasedNFTs(props){
                 for(let url in meta.image[key]){
                     const imageUrl = meta.image[key][url];
                     
-                    if(imageUrl.split('/')[0] == 'ipfs:'){
+                    if(imageUrl.split('/')[0] === 'ipfs:'){
                         const hash = imageUrl.split('/')[3];
                         meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
                     }
@@ -73,9 +61,6 @@ export default function PurchasedNFTs(props){
         
     }
     
-    if(!countLoaded){
-        loadCount();
-    }   
     if(!timedAuctionsLoaded){
         loadTimedAuctions();
         setTimedAuctionsLoaded(true); 
@@ -119,7 +104,7 @@ export default function PurchasedNFTs(props){
                     <Card.Body>
                       
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <img src={item.imageUrl} style={{width:300, height:250}}></img>
+                          <img src={item.imageUrl} alt={item.name} style={{width:300, height:250}}></img>
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           
@@ -145,7 +130,7 @@ export default function PurchasedNFTs(props){
                     <Card.Footer>
                         <div style={{display:'inline'}}>
                             <p style={{display:'inline'}}>Creator: {item.owner}</p>
-                            <a target="_blank" href={item.imageUrl}><Button variant="warning" style={{marginLeft:60}}>View Image on IPFS</Button></a>
+                            <a target="_blank" rel="noreferrer" href={item.imageUrl}><Button variant="warning" style={{marginLeft:60}}>View Image on IPFS</Button></a>
                         </div>
                     </Card.Footer>
                   </Card>

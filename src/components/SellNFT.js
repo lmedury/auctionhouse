@@ -1,26 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Card, Image, Button, Row, Col, Form, Alert, Modal } from 'react-bootstrap';
 import constants from '../constants';
-import createTimedAuction from '../ethereum/web3';
 import loader from '../assets/img/loader.svg';
 import { toAddress, toBigNumber } from "@rarible/types"
 
 export default function SellNFT(props) {
-    const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState();
-    const [price, setPrice] = useState(0);
+    
     const [alert, setAlert] = useState(false);
     const [message, setMessage] = useState();
     const [variant, setVariant] = useState();
     const [loading, setLoading] = useState(false);
-
-
-    const [createOrderForm, setCreateOrderForm] = useState({
-		contract: constants.ERC721,
-		tokenId: '',
-		price: '1',
-		hash: '',
-	});
 
     const [sellOrder, setSellOrder] = useState({});
     const [show, setShow] = useState(false);
@@ -29,20 +18,20 @@ export default function SellNFT(props) {
         if(show) setShow(false);
         else setShow(true);
     }
-
+    
     async function createSellOrder(item){
         console.log(item);
         const request = {
             makeAssetType: {
                 assetClass: "ERC721",
-                contract: toAddress(createOrderForm.contract),
+                contract: toAddress(constants.ERC721),
                 tokenId: toBigNumber(item.token.split(':')[1]),
             },
             amount: 1,
             maker: toAddress(props.address),
             originFees: [],
             payouts: [],
-            price: toBigNumber(createOrderForm.price),
+            price: toBigNumber(1),
             takeAssetType: { assetClass: "ETH" },
         }
         // Create an order
@@ -81,7 +70,7 @@ export default function SellNFT(props) {
             </Modal>
             {loading ? 
             <div style={{marginTop:100}}>
-                <img src={loader} style={{width:200}}></img>
+                <img src={loader} alt="Loading" style={{width:200}}></img>
                 <h3>Processing...</h3>
             </div> : null}
             
@@ -117,7 +106,7 @@ export default function SellNFT(props) {
                             </Form.Group>
                             <Button style={{width:"100%"}} variant="success" onClick={async() => {
                                 setLoading(true);
-                                let res = await createSellOrder(props.item);
+                                await createSellOrder(props.item);
                         
                             }}>Create Sell Order</Button>
                             

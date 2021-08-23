@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import {Col, Container, Row, Image, Form, Card, Modal} from 'react-bootstrap';
 import constants from "../constants";
 import rarible from '../assets/img/rarible.png';
-import { createLazyMint } from "../rarible/LazyMint";
 import { toAddress } from "@rarible/types";
 import ipfsImage from '../assets/img/ipfs.png';
 import metamask from '../assets/img/metamask.svg';
@@ -38,7 +37,6 @@ export default function CreateNFT(props) {
     const [filePath, setFilePath] = useState('');
     const [title, setTitle] = useState('Title');
     const [description, setDescription] = useState('Description');
-    const [ipfsHash, setIpfsHash] = useState('');
     const [show, setShow] = useState(false);
 
     function handleClose () {
@@ -122,7 +120,7 @@ export default function CreateNFT(props) {
                             <Col lg="4">
                                 <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>   
                                     <h5><strong>Upload Art</strong></h5>
-                                    <img src={ipfsImage} style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
+                                    <img src={ipfsImage} alt="IPFS" style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
                                     <p>The art image you select is initially uploaded to IPFS, a Decentralized Peer-to-peer file storage system
                                         
                                     </p>
@@ -131,14 +129,14 @@ export default function CreateNFT(props) {
                             <Col lg={{span:"4"}} >
                                 <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>    
                                     <h5><strong>Set Title and Description</strong></h5>    
-                                    <img src={rarible} style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
+                                    <img src={rarible} alt="Rarible" style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
                                     <p>Give your Art a cool name and description. Be as creative and descriptive as possible! This NFT will be listed on <strong>Rarible</strong>.</p>
                                 </Card>
                             </Col>
                             <Col lg={{span:"4"}}>
                                 <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                                     <h5><strong>Sign Mint721 Transaction</strong></h5>
-                                    <img src={metamask} style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
+                                    <img src={metamask} alt="Metamask" style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
                                     <p>With Lazy Minting, you're essentially deferring the blockchain transaction costs to mint an NFT until a buyer purchases your NFT.
                                         This is especially useful if you're unsure whether your NFT will be sold or not.
                                     </p>
