@@ -67,9 +67,9 @@ export default function PurchasedNFTs(props){
     }
 
     async function claim(){
-        
+        console.log(sellOrder);
         console.log(props.sdk.order);
-        await props.sdk.order.fill(sellOrder, {amount: parseInt(1)}).then(a => a.runAll());
+        await props.sdk.order.fill(sellOrder, {amount: '1'}).then(a => a.runAll());
         
     }
 
@@ -121,7 +121,7 @@ export default function PurchasedNFTs(props){
                             You purchased for: <strong>{item.highestBid}</strong> wei
                           </h5>
                           
-                          {!true ? <Button variant="success" style={{width:'100%'}} onClick={handleClose}>Claim NFT</Button> : null}
+                          {!false ? <Button variant="success" style={{width:'100%'}} onClick={handleClose}>Claim NFT</Button> : null}
                           
                     
                       </div>   
@@ -130,7 +130,7 @@ export default function PurchasedNFTs(props){
                     <Card.Footer>
                         <div style={{display:'inline'}}>
                             <p style={{display:'inline'}}>Creator: {item.owner}</p>
-                            <a target="_blank" rel="noreferrer" href={item.imageUrl}><Button variant="warning" style={{marginLeft:60}}>View Image on IPFS</Button></a>
+                            <a target="_blank" rel="noreferrer" href={item.imageUrl}><Button variant="warning" style={{marginLeft:30}}>View Image on IPFS</Button></a>
                         </div>
                     </Card.Footer>
                   </Card>

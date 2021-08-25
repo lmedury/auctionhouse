@@ -12,7 +12,9 @@ import Home from './components/Home';
 import Footer from './components/Footer';
 import PurchasedNFTs from './components/PurchasedNFTs';
 import SellNFT from './components/SellNFT';
-const Web3 = require('web3');
+import { Web3Ethereum } from "@rarible/web3-ethereum"
+import Web3 from "web3";
+//const Web3 = require('web3');
 
 let web3;
 function App() {
@@ -26,9 +28,11 @@ function App() {
   useEffect(() => {
     
     if(!metamask){
+      /*
       if(window.ethereum){
         web3 = new Web3(window.ethereum);
         const raribleSdk = createRaribleSdk(web3, 'ropsten');
+        //const raribleSdk = createRaribleSdk(new Web3Ethereum({ web3 }), 'ropsten')
         setSdk(raribleSdk);
         try{
           window.ethereum.enable().then(function(){
@@ -42,12 +46,27 @@ function App() {
           console.log('Denied');
         }
       }
-      setMetamask(true);
-    }
+      setMetamask(true);*/
+      const { ethereum } = window;
+      if (ethereum && ethereum.isMetaMask) {
+          console.log('Ethereum successfully detected!')          
+          // configure web3
+          const web3 = new Web3(ethereum)
+          // configure raribleSdk
+          const raribleSdk = createRaribleSdk(new Web3Ethereum({ web3 }), 'ropsten');
+          setSdk(raribleSdk)
+          // set current account if already connected
+          web3.eth.getAccounts().then(e => {
+            setAddress(e[0])
+          })
+      } else {
+          console.log('Please install MetaMask!')
+        }
+      }
     window.ethereum.on('accountsChanged', function(accounts){
         setAddress(accounts[0]);
     })
-    
+   
   }, [metamask]);
 
   let content;

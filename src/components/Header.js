@@ -22,7 +22,7 @@ export default function Header(props) {
                 
             }} style={{width:250, marginLeft:30}}></img>
             <div style={{marginLeft:'55%', display:'inline', justifyContent:'space-between'}}>
-                {itemState ? <Button variant="warning">My Items</Button> :
+                {itemState ? <Button variant="warning">My NFTs</Button> :
                 <a href="/#" style={{textDecoration:'none'}}>
                 <p style={{color:'white', display:'inline'}} onClick={() => {
                     setItemState(true);

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Card, Image, Button, Row, Col, Form, Alert, Modal } from 'react-bootstrap';
 import constants from '../constants';
 import loader from '../assets/img/loader.svg';
-import { toAddress, toBigNumber } from "@rarible/types"
+import { toAddress, toBigNumber } from "@rarible/types";
 
 export default function SellNFT(props) {
     
@@ -20,7 +20,7 @@ export default function SellNFT(props) {
     }
     
     async function createSellOrder(item){
-        console.log(item);
+        console.log(item.contract);
         const request = {
             makeAssetType: {
                 assetClass: "ERC721",
@@ -31,7 +31,7 @@ export default function SellNFT(props) {
             maker: toAddress(props.address),
             originFees: [],
             payouts: [],
-            price: toBigNumber(1),
+            price: toBigNumber('1'),
             takeAssetType: { assetClass: "ETH" },
         }
         // Create an order
@@ -46,9 +46,9 @@ export default function SellNFT(props) {
         }
         
     }
-   
+
     return(
-        <div className="text-center" style={{marginTop:50}}>
+        <div className="text-center" style={{marginTop:50, overflowX:'hidden'}}>
             
             <h2>Create a Sell Order</h2>
             <Modal show={show} size="lg" onHide={handleClose}>
