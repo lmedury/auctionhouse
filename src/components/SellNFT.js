@@ -76,13 +76,13 @@ export default function SellNFT(props) {
             
                             
             {alert ? 
-            <Alert variant={variant} className="text-center" style={{width:'50%', marginLeft:'25%'}}>
+            <Alert variant={variant} className="text-center" style={{width:'50%', marginLeft:'25%', marginRight:'25%'}}>
                 {message}
             </Alert>: null}
             <div style={{marginTop:50}}>
                 <Row>
                     <Col lg={{span: 3, offset: 3}}>
-                        <Card style={{ width: 400 }}>
+                        <Card style={{ width: '100%' }}>
                             <Card.Body>
                                 <Image src={props.item.imageUrl || 'https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547__480.jpg' } rounded style={{width:350}} />  
                             </Card.Body>

@@ -67,10 +67,18 @@ export default function PurchasedNFTs(props){
     }
 
     async function claim(){
-        console.log(sellOrder);
-        console.log(props.sdk.order);
         await props.sdk.order.fill(sellOrder, {amount: '1'}).then(a => a.runAll());
-        
+    }
+
+    async function getSellOrder(token){
+        let collectionContract = constants.ERC721;
+        let sellOrders = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders/sell/byItem?contract=${collectionContract}&tokenId=${token}&sort=LAST_UPDATE`);
+        sellOrders = await sellOrders.json();
+        if(sellOrders.orders.length>0){
+            sellOrders = sellOrders.orders[0];
+            console.log(sellOrders);
+        }
+        setOrderInformation(sellOrders);
     }
 
     return (
@@ -121,7 +129,10 @@ export default function PurchasedNFTs(props){
                             You purchased for: <strong>{item.highestBid}</strong> wei
                           </h5>
                           
-                          {!false ? <Button variant="success" style={{width:'100%'}} onClick={handleClose}>Claim NFT</Button> : null}
+                          {!false ? <Button variant="success" style={{width:'100%'}} onClick={() => {
+                              handleClose();
+                              getSellOrder(item.token);
+                            }}>Claim NFT</Button> : null}
                           
                     
                       </div>   
