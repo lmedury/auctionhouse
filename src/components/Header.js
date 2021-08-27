@@ -23,42 +23,42 @@ export default function Header(props) {
             }} style={{width:250, marginLeft:30}}></img>
             <div style={{marginRight:'55%',display:'inline', justifyContent:'space-between'}}>
                 {itemState ? <Button variant="warning">My NFTs</Button> :
-                <a href="/#" style={{textDecoration:'none'}}>
+                
                 <p style={{color:'white', display:'inline'}} onClick={() => {
                     setItemState(true);
                     setCreateState(false);
                     setAuctionState(false);
                     setPurchasedState(false);
                     props.changeRoute('MyItems')
-                }}>My NFTs</p></a> }
+                }}>My NFTs</p>}
                 {createState ? <Button variant="warning" style={{marginLeft:10}} >Create NFT</Button>  : 
-                <a href="/#" style={{textDecoration:'none'}}>
+                
                 <p style={{color:'white', display:'inline', marginLeft:30}} onClick={() => {
                     setItemState(false);
                     setCreateState(true);
                     setAuctionState(false);
                     setPurchasedState(false);
                     props.changeRoute('Create');
-                }}>Create NFT</p></a>}
+                }}>Create NFT</p>}
                 {auctionState ? <Button variant="warning" style={{marginLeft:10}}>Auctions</Button>  : 
-                <a href="/#" style={{textDecoration:'none'}}>
+                
                 <p style={{color:'white', display:'inline', marginLeft:30}} onClick={() => {
                     setItemState(false);
                     setCreateState(false);
                     setAuctionState(true);
                     setPurchasedState(false);
                     props.changeRoute('List');
-                }}>Auctions</p></a>
+                }}>Auctions</p>
                 }
                 {purchasedState ? <Button variant="warning" style={{marginLeft:10}} >Purchased NFTs</Button> :
-                <a href="/#" style={{textDecoration:'none'}}>
+                
                 <p style={{color:'white', display:'inline', marginLeft:30}} onClick={() => {
                     setItemState(false);
                     setCreateState(false);
                     setAuctionState(false);
                     setPurchasedState(true);
                     props.changeRoute('Purchased')
-                }}>Purchased NFTs</p></a>
+                }}>Purchased NFTs</p>
                 }
                   
                      
