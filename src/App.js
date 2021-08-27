@@ -59,6 +59,7 @@ function App() {
           web3.eth.getAccounts().then(e => {
             setAddress(e[0])
           })
+          setMetamask(true);
       } else {
           console.log('Please install MetaMask!')
         }

@@ -94,9 +94,9 @@ export default function MyItems(props) {
             <h3>My NFTs</h3>
             <Row>
             {nfts.map((item) => 
-                <Col lg={6} key={item.token}>
+                <Col lg={6} md="12" key={item.token}>
                 
-                <div  style={{textAlign:'left', marginLeft:'10%'}} >
+                <div  style={{textAlign:'left', marginLeft:'10%', marginRight:'10%'}} >
 
                   <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20,
                     borderColor:constants.COLORS.ORANGE, borderWidth:3
@@ -104,9 +104,9 @@ export default function MyItems(props) {
                     }}>
                     <Card.Body>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <Image src={item.imageUrl} style={{width: 300, height: 300, borderRadius:10}}></Image>
+                          <Image src={item.imageUrl} style={{width: '95%', height: 300, borderRadius:10}}></Image>
                       </div>
-                      <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
+                      <div style={{width:'50%',display:'inline-block', verticalAlign:'top'}}>
                           <h3 style={{fontFamily:'Montserrat', display:'inline'}}>Title: {item.name}</h3>
                           {checkIfAuctioned(item.token.split(':')[1]) === 'Sold' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={sold} alt="Sold"></img>: null}
                           {checkIfAuctioned(item.token.split(':')[1]) === 'Auctioned' ? <img style={{width:80, marginLeft:10, display:'inline'}} src={auctioned} alt="Auctioned"></img> : null}
@@ -119,16 +119,18 @@ export default function MyItems(props) {
                           
                           
                           
-                          <div style={{marginTop:200}}>
-                          <a href={item.imageUrl} rel="noreferrer" target="_blank"><Button variant="warning">View Image on IPFS</Button></a>
-                          {
-                            (checkIfAuctioned(item.token.split(':')[1]) === 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) === 'Sold') ? null :                           
-                          <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 5}}>Auction This Item</Button> }
+                            <div style={{marginTop:200}}>
+                            <a href={item.imageUrl} rel="noreferrer" target="_blank"><Button variant="warning">View on IPFS</Button></a>
+                            {
+                                (checkIfAuctioned(item.token.split(':')[1]) === 'Auctioned' || checkIfAuctioned(item.token.split(':')[1]) === 'Sold') ? null :                           
+                            <Button variant="success" onClick={() => props.auctionItem(item)} style={{marginLeft: 5}}>Auction Item</Button> }
 
-                          {checkIfAuctioned(item.token.split(':')[1]) === 'Sold' ? 
-                          <Button variant="danger" onClick={() => props.createSellOrder(item)} style={{marginLeft: 5}}>Create Sell Order</Button> : null }
+                            {checkIfAuctioned(item.token.split(':')[1]) === 'Sold' ? 
+                            <Button variant="danger" onClick={() => props.createSellOrder(item)} style={{marginLeft: 5}}>Create Sell Order</Button> : null }
+                            
+                            </div>
                           
-                          </div>
+                          
                       </div>   
                       
                     </Card.Body>

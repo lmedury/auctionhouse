@@ -87,10 +87,10 @@ export default function CreateNFT(props) {
                 </div>
                     {fileLoaded ? 
                     <Row>
-                        <Col lg="6">
-                            <Card style={{ width: 600 }}>
+                        <Col lg="6" md="12">
+                            <Card style={{ width: '100%' }}>
                                 <Card.Body>
-                                    <Image src={filePath} rounded style={{width:550}} />  
+                                    <Image src={filePath} rounded style={{width:'95%'}} />  
                                 </Card.Body>
                                 <div className="text-center" style={{ height:'100%', backgroundColor:constants.COLORS.BLUE}}>
                                     <h3 style={{color:'white', flexGrow:1}}>{title}</h3>
@@ -99,7 +99,7 @@ export default function CreateNFT(props) {
                             </Card>
                         </Col>
 
-                        <Col lg="6">
+                        <Col lg="6" >
                             <Form>
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                     

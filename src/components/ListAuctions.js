@@ -37,6 +37,7 @@ export default function ListAuctions(props){
 
     async function loadTimedAuctions(){
         const auctions = await getTimedAuctions();
+        let nfts = [];
         
         for(let i=0; i<auctions.length; i++){
             const token = auctions[i][0];
@@ -71,9 +72,11 @@ export default function ListAuctions(props){
                 }
                 break;
             }
-            setTimedAuctions(currentState => [...currentState, meta]); 
+            nfts.push(meta);
+            
         }
         
+        setTimedAuctions(nfts.reverse());    
     }
     
     if(!countLoaded){
@@ -85,11 +88,11 @@ export default function ListAuctions(props){
     }
     
     return(
-        <div className="text-center" style={{marginLeft:100, marginRight:100, overflowX:'hidden'}}>
+        <div className="text-center" style={{marginLeft:'5%', overflowX:'hidden'}}>
             <h2><strong>NFT Auctions</strong></h2>
             <Row style={{marginTop:50, marginRight:50}}>
                 <Col lg={3}>
-                    <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:250, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                    <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                         <Card.Body>
                             <h5><strong>Timed Auctions: </strong>{auctionCount.timed}</h5>
                             <p><em>Timed auctions don’t have an auctioneer calling the bids – there’s just a bidding window and whoever bids highest during it wins (as long as the reserve’s met of course). You'll know it's a timed auction as the end time will be displaced on the lot page.</em>
@@ -100,7 +103,7 @@ export default function ListAuctions(props){
                 </Col>
                 <Col lg={3} >
                     <Card style={{borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
-                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:250}}>
+                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300}}>
                             <h5><strong>Reserved Auctions: </strong>{auctionCount.reserved}</h5>
                             <p><em>This is an auction where the final bid for an item can be rejected by the seller if it is not high enough to satisfy them. They may set a particular fixed reserve, or they may alter the reserve over the course of the auction in response to the bids placed. Bidders are often unaware of the reserve price.</em>
                                 <br/>Source: <a href="https://www.sensibledevelopment.com/auction-glossary/auction-types/what-is-a-reserve-auction">Link</a>
@@ -110,7 +113,7 @@ export default function ListAuctions(props){
                 </Col>
                 <Col lg={3}>
                     <Card style={{borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
-                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:250}}>
+                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300}}>
                             <h5><strong>Open Auctions: </strong>{auctionCount.open}</h5>
                             <p><em>This is an auction where bidding is public, and every bidder has full knowledge of the value of all the other bids. </em>
                                 <br/>Source: <a href="https://www.sensibledevelopment.com/auction-glossary/auction-types/what-are-open-bid-sealed-bid-auctions">Link</a>
@@ -120,7 +123,7 @@ export default function ListAuctions(props){
                 </Col>
                 <Col lg={3}>
                     <Card style={{borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
-                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:250}}>
+                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300}}>
                             <h5><strong>Vickery Auctions: </strong>{auctionCount.vickery}</h5>
                             <p><em>A Vickrey auction is a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. </em>
                                 <br/>Source: <a href="https://en.wikipedia.org/wiki/Vickrey_auction">Link</a>
@@ -136,14 +139,14 @@ export default function ListAuctions(props){
 
                 <div  style={{textAlign:'left'}} >
 
-                  <Card style={{width:'40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                  <Card style={{width:'43vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
                     <Card.Body>
                     {item.isOpen ? null
                     : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>
                     Winner: {item.highestBidder} <img style={{width:80, marginLeft:30}} alt="Sold" src={soldicon}></img>
                     </h5> }
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <img src={item.imageUrl} alt={item.name} style={{width:330, height:350, borderRadius:10}}></img>
+                          <img src={item.imageUrl} alt={item.name} style={{width:'95%', height:350, borderRadius:10}}></img>
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           {item.isOpen ? <h5 style={{fontFamily:'Montserrat', color:'green'}}>
@@ -186,20 +189,30 @@ export default function ListAuctions(props){
                       
                     </Card.Body>
                     <Card.Footer>
-                        <div style={{display:'inline'}}>
-                            <p style={{display:'inline'}}>Creator: <a target="_blank" rel="noreferrer" href={`https://ropsten.etherscan.io/address/${item.owner}`}>{item.owner}</a></p>
-                            <p style={{display:'inline', marginLeft:15}}><img src={likes} alt="Likes" style={{display:'inline', width:30, marginRight:5}}></img>{item.likes}</p>
-                            {item.owner === props.address ? 
-                            <Button variant="danger" style={{marginLeft:20, display:'inline', width:150}} disabled={!item.isOpen} onClick={async () => {
-                                handleClose();
-                                setAuctionItem(item);
-                            }}>Close Auction</Button>
-                            : 
-                            <Button variant="success" style={{marginLeft:40, display:'inline', width:150}} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} onClick={async () => {
-                                await bidOnTimedAuction(item.id, bid);
-                            }}>{item.highestBidder === props.address ? 'Increase Bid': 'Bid'}</Button>  }
-                            
-                        </div>
+                        <Row>
+                            <Col lg="8" md="12">
+                                <p style={{display:'inline'}}>Creator: <a target="_blank" rel="noreferrer" href={`https://ropsten.etherscan.io/address/${item.owner}`}>{item.owner}</a></p>
+                            </Col>
+                            <Col lg="3">
+                                <Row>
+                                    <Col lg="5">
+                                        <p style={{display:'inline'}}><img src={likes} alt="Likes" style={{width:30,display:'inline', marginRight:5}}></img>{item.likes}</p>
+                                    </Col>
+                                    <Col lg="6">
+                                        {item.owner === props.address ? 
+                                        <Button variant="danger" style={{width:150}} disabled={!item.isOpen} onClick={async () => {
+                                            handleClose();
+                                            setAuctionItem(item);
+                                        }}>Close Auction</Button>
+                                        : 
+                                        <Button variant="success" style={{width:150}} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} onClick={async () => {
+                                            await bidOnTimedAuction(item.id, bid);
+                                        }}>{item.highestBidder === props.address ? 'Increase Bid': 'Bid'}</Button>  }
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        
                     </Card.Footer>
                   </Card>
 

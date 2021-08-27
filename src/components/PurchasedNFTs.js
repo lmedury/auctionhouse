@@ -100,11 +100,11 @@ export default function PurchasedNFTs(props){
 
                 <div  style={{textAlign:'left'}} >
 
-                  <Card style={{ width: '40vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:'green', borderWidth:5}}>
+                  <Card style={{ width: '40vw',height:'100%', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:'green', borderWidth:5}}>
                     <Card.Body>
                       
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
-                          <img src={item.imageUrl} alt={item.name} style={{width:300, height:250}}></img>
+                          <img src={item.imageUrl} alt={item.name} style={{width:'95%', height:250, borderRadius:10}}></img>
                       </div>
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
                           
@@ -129,7 +129,7 @@ export default function PurchasedNFTs(props){
                     </Card.Body>
                     <Card.Footer>
                         <div style={{display:'inline'}}>
-                            <p style={{display:'inline'}}>Creator: {item.owner}</p>
+                            <p style={{display:'inline'}}>Creator: <a target="_blank" rel="noreferrer" href={`https://ropsten.etherscan.io/address/${item.owner}`}>{item.owner}</a></p>
                             <a target="_blank" rel="noreferrer" href={item.imageUrl}><Button variant="warning" style={{marginLeft:30}}>View Image on IPFS</Button></a>
                         </div>
                     </Card.Footer>

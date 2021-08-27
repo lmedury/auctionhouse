@@ -21,7 +21,7 @@ export default function Header(props) {
                 props.changeRoute('Home');
                 
             }} style={{width:250, marginLeft:30}}></img>
-            <div style={{marginLeft:'55%', display:'inline', justifyContent:'space-between'}}>
+            <div style={{marginRight:'55%',display:'inline', justifyContent:'space-between'}}>
                 {itemState ? <Button variant="warning">My NFTs</Button> :
                 <a href="/#" style={{textDecoration:'none'}}>
                 <p style={{color:'white', display:'inline'}} onClick={() => {
