@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/auctionhouse/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/auctionhouse/static/js/main.05f6b7a1.chunk.js",
-    "main.js.map": "/auctionhouse/static/js/main.05f6b7a1.chunk.js.map",
+    "main.js": "/auctionhouse/static/js/main.acc1c403.chunk.js",
+    "main.js.map": "/auctionhouse/static/js/main.acc1c403.chunk.js.map",
     "runtime-main.js": "/auctionhouse/static/js/runtime-main.6368dd78.js",
     "runtime-main.js.map": "/auctionhouse/static/js/runtime-main.6368dd78.js.map",
     "static/css/2.fb17aa6d.chunk.css": "/auctionhouse/static/css/2.fb17aa6d.chunk.css",
@@ -28,6 +28,6 @@
     "static/css/2.fb17aa6d.chunk.css",
     "static/js/2.865cb929.chunk.js",
     "static/css/main.8c8b27cf.chunk.css",
-    "static/js/main.05f6b7a1.chunk.js"
+    "static/js/main.acc1c403.chunk.js"
   ]
 }
