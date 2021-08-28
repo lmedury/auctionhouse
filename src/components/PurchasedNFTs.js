@@ -1,9 +1,11 @@
 import React, {useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
-import {Col, Row, Card, Modal} from 'react-bootstrap';
+import {Col, Row, Card, Modal, Alert} from 'react-bootstrap';
 import constants from "../constants";
 import {getTimedAuctions} from '../ethereum/web3';
+import error from '../assets/img/error.jpg';
+import loader from '../assets/img/loader.svg';
 
 
 export default function PurchasedNFTs(props){
@@ -11,8 +13,11 @@ export default function PurchasedNFTs(props){
     const [timedAuctionsLoaded, setTimedAuctionsLoaded] = useState(false);
     const [timedAuctions, setTimedAuctions] = useState([]);
     const [sellOrder, setOrderInformation] = useState({});
-
     const [show, setShow] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    const [alert, setAlert] = useState(false);
+
     
     function handleClose(){
         if(show) setShow(false);
@@ -67,7 +72,14 @@ export default function PurchasedNFTs(props){
     }
 
     async function claim(){
-        await props.sdk.order.fill(sellOrder, {amount: '1'}).then(a => a.runAll());
+        setProcessing(true);
+        try{
+            await props.sdk.order.fill(sellOrder, {amount: '1'}).then(a => a.runAll());
+            setAlert(true);
+        }catch(err){
+            setProcessing(false);
+        }
+        
     }
 
     async function getSellOrder(token){
@@ -79,28 +91,80 @@ export default function PurchasedNFTs(props){
             console.log(sellOrders);
         }
         setOrderInformation(sellOrders);
+        handleClose();
+        setLoaded(true);
     }
 
     return (
         <div className="text-center" style={{overflowX:'hidden'}}>
             <h2>NFTs Purchased Through Auction House</h2>
+            {loaded ? 
             <Modal show={show} size="lg" onHide={handleClose}>
-                <Modal.Header closeButton>
+                <Modal.Header >
                 <Modal.Title>Sell Order Information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body><textarea cols="75" rows="20" onChange={(e) => setOrderInformation(JSON.parse(e.target.value))}></textarea></Modal.Body>
+                <div className="text-center">
+                    <h3>Fill Order Information</h3>
+                </div>
+                {sellOrder.maker ? 
+                <div style={{marginLeft:20, marginTop:30}}>
+                    <p>Contract: {sellOrder.make.assetType.contract || 'Contract'}</p>
+                    <p>Token Id: {sellOrder.make.assetType.tokenId || 'Token'}</p>
+                    <p>Owner: {sellOrder.maker || 'Maker'}</p>
+                    <p>Price: {sellOrder.take.value || 'Value'} wei</p>
+                    <hr/>
+                    <h6>Additional Information:</h6>
+                    
+                    <p>Salt: {sellOrder.salt || 'Salt'}</p>
+                    
+                </div> : 
+                <div className="text-center">
+                    <img src={error} alt="loader" style={{width:'20%'}}></img>
+                    <h5>No sell orders available at the moment</h5>
+                </div> }
+               
+                
+                <p></p>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="success" onClick={() => {
+                <Button variant="success" disabled={!sellOrder.maker} onClick={() => {
                     claim();
                     handleClose();
                 }}>
-                    Claim
+                    Fill Order
                 </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> : null}
+
+            
+            <Modal show={processing} size="lg" onHide={handleClose}>
+                <Modal.Header >
+                <Modal.Title>Sell Order Information</Modal.Title>
+                </Modal.Header>
+                <div className="text-center">
+                    <h3>Submitted Transaction</h3>
+                    {alert ? 
+                    <Alert variant="success" style={{margin:30}}>
+                        Congratulations! You have received your NFT. You can check the NFTs you have in My NFTs
+                        
+                    </Alert>: null}
+                
+                <img src={loader} alt="loader" style={{width:'30%'}}></img>
+                </div>
+                <p></p>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={() => setProcessing(false)}>
+                    Close
+                </Button>
+                <Button variant="success" onClick={() => {
+                    setProcessing(false);
+                }}>
+                    Thank you!
+                </Button>
+                </Modal.Footer>
+            </Modal> 
             
             <Row style={{marginLeft:50}}>
             {timedAuctions.map((item) => 
