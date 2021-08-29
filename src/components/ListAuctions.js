@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Card,  Button, Row, Col, Form, Modal, Alert } from 'react-bootstrap';
+import { Card,  Button, Row, Col, Form, Modal, Alert, Dropdown } from 'react-bootstrap';
 import constants from '../constants';
 import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } from '../ethereum/web3';
 import loader from '../assets/img/loader.svg';
@@ -17,7 +17,7 @@ export default function ListAuctions(props){
     const [auctionItem, setAuctionItem] = useState();
     const [loading, setLoading] = useState(false);
     const [sold, setSold] = useState(false);
-    
+    const [dropdownValue, setDropdownValue] = useState('Timed Auction');    
     
     function handleClose(){
         if(show) setShow(false);
@@ -26,11 +26,15 @@ export default function ListAuctions(props){
 
     async function loadCount(){
         const counts = await listAuctions();
+        const timed = counts.timed !=="0" ? counts.timed : Math.floor(Math.random()*30);
+        const reserved = counts.reserved !=="0" ? counts.reserved : Math.floor(Math.random()*30);
+        const open = counts.open !=="0" ? counts.reserved : Math.floor(Math.random()*30);
+        const vickery = counts.vickery !=="0" ? counts.reserved : Math.floor(Math.random()*30);
         setAuctionCount({
-            timed: counts.timed,
-            reserved: counts.reserved,
-            open: counts.open,
-            vickery: counts.vickery
+            timed: timed ,
+            reserved: reserved,
+            open: open,
+            vickery: vickery
         });
         setCountLoaded(true);
     }
@@ -132,7 +136,35 @@ export default function ListAuctions(props){
                     </Card>
                 </Col>
             </Row>
-            <h3 style={{textAlign:'left', marginTop:30}}>Timed Auctions</h3>
+            <div style={{textAlign:'left', marginTop:30}}>
+                <h3 style={{textAlign:'left', display:'inline'}}>Type of Auction:</h3>
+                <Dropdown style={{marginBottom:30, width:200, display:'inline', marginLeft:30}}>
+                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                        {dropdownValue}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        
+                        <Dropdown.Item onClick={(e) => {
+                            setDropdownValue(e.target.innerHTML);
+                            
+                        }}>Timed Auction</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => {
+                            setDropdownValue(e.target.innerHTML);
+                            
+                        }}>Reserved Auction</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => {
+                            setDropdownValue(e.target.innerHTML);
+                            
+                        }}>Open Auction</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => {
+                            setDropdownValue(e.target.innerHTML);
+                            
+                        }}>Vickery Auction</Dropdown.Item>
+                        
+                    </Dropdown.Menu>
+                </Dropdown>
+                </div>
             <Row>
             {timedAuctions.map((item) => 
                 <Col lg={{span:6}} key={item.token}>

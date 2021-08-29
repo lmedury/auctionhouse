@@ -42,7 +42,6 @@ export default function SellNFT(props) {
             setLoading(false);
             setVariant('success');
             setMessage(`Sell order successfully submitted to the exchange. Order Hash: ${resultOrder.hash}`);
-            handleClose();
         }
         
     }
