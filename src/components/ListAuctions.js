@@ -18,10 +18,16 @@ export default function ListAuctions(props){
     const [loading, setLoading] = useState(false);
     const [sold, setSold] = useState(false);
     const [dropdownValue, setDropdownValue] = useState('Timed Auction');    
+    const [processing, setProcessing] = useState(false);
     
     function handleClose(){
         if(show) setShow(false);
         else setShow(true);
+    }
+    
+    function closeModal(){
+        if(processing) setProcessing(false);
+        else setProcessing(true);
     }
 
     async function loadCount(){
@@ -238,7 +244,10 @@ export default function ListAuctions(props){
                                         }}>Close Auction</Button>
                                         : 
                                         <Button variant="success" style={{width:150}} disabled={!item.isOpen || (new Date(item.deadline) < new Date())} onClick={async () => {
+                                            
                                             await bidOnTimedAuction(item.id, bid);
+                                            setProcessing(true);
+                                            
                                         }}>{item.highestBidder === props.address ? 'Increase Bid': 'Bid'}</Button>  }
                                     </Col>
                                 </Row>
@@ -301,6 +310,24 @@ export default function ListAuctions(props){
                     }
                 }}>
                     Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={processing}>
+                <Modal.Header>
+                <Modal.Title>Congratulations!</Modal.Title>
+                </Modal.Header>
+                <div style={{textAlign:'center'}}>
+                    <Modal.Body> 
+                        <h5 style={{fontFamily:'Montserrat'}}>Congratulations, you've successfully submitted your bid of <strong>{bid}</strong> wei!</h5>
+                        <img alt="success" src='https://uxwing.com/wp-content/themes/uxwing/download/48-checkmark-cross/success-green-check-mark.png' style={{width:300, margin:50}} />
+                    </Modal.Body>
+                </div>
+                
+                <Modal.Footer>
+                
+                <Button variant="success" onClick={closeModal}>
+                    Thank You
                 </Button>
                 </Modal.Footer>
             </Modal>
