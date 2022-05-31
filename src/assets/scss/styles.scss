@@ -1,0 +1,27 @@
+$dark: #212121;
+$light: white;
+$orange: orange;
+
+@mixin card-class($bgcolor, $textcolor, $bordercolor, $align){
+    border: 1px solid $bordercolor;
+    background-color: $bgcolor;
+    color: $textcolor;
+    text-align: $align;
+    height: 100%;
+}
+
+.dark-theme {
+    background-color: $dark;
+    color: $light;
+    .card-class {
+        @include card-class($dark, $light, $orange, left);
+    }
+    .card-class-center{
+        @include card-class($dark, $light, $orange, center);
+    }
+}
+
+.min-height {
+    min-height: 90vh;
+}
+

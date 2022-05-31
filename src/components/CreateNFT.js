@@ -79,7 +79,7 @@ export default function CreateNFT(props) {
     }
 
     return (
-        <Container>
+        <Container className="min-height">
             <Row>
                 <div className="text-center" style={{alignContent:'center'}}>
                 <div style={{marginBottom:50}}>
@@ -88,7 +88,7 @@ export default function CreateNFT(props) {
                     {fileLoaded ? 
                     <Row>
                         <Col lg="6" md="12">
-                            <Card style={{ width: '100%' }}>
+                            <Card className="card-class-center" style={{ width: '100%' }}>
                                 <Card.Body>
                                     <Image src={filePath} rounded style={{width:'95%'}} />  
                                 </Card.Body>
@@ -118,7 +118,7 @@ export default function CreateNFT(props) {
                         <h3>How is an NFT Created?</h3>
                         <Row className="text-center" style={{marginTop:30, fontFamily:'Montserrat'}}>
                             <Col lg="4">
-                                <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>   
+                                <Card className="card-class-center" style={{padding:20, height:400}}>   
                                     <h5><strong>Upload Art</strong></h5>
                                     <img src={ipfsImage} alt="IPFS" style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
                                     <p>The art image you select is initially uploaded to IPFS, a Decentralized Peer-to-peer file storage system
@@ -127,14 +127,14 @@ export default function CreateNFT(props) {
                                 </Card>
                             </Col>
                             <Col lg={{span:"4"}} >
-                                <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>    
+                                <Card className="card-class-center" style={{padding:20, height:400}}>    
                                     <h5><strong>Set Title and Description</strong></h5>    
                                     <img src={rarible} alt="Rarible" style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
                                     <p>Give your Art a cool name and description. Be as creative and descriptive as possible! This NFT will be listed on <strong>Rarible</strong>.</p>
                                 </Card>
                             </Col>
                             <Col lg={{span:"4"}}>
-                                <Card style={{backgroundColor:constants.COLORS.GREY, padding:20, height:400,borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                                <Card className="card-class-center" style={{padding:20, height:400}}>
                                     <h5><strong>Sign Mint721 Transaction</strong></h5>
                                     <img src={metamask} alt="Metamask" style={{width:150, marginLeft:'30%', marginBottom:20, marginTop:20}}></img>
                                     <p>With Lazy Minting, you're essentially deferring the blockchain transaction costs to mint an NFT until a buyer purchases your NFT.

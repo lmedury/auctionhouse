@@ -16,37 +16,40 @@ export default function MyItems(props) {
 
 
     async function getItems(){
-        const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner?owner=${address}`)
-        .then((res) => res.json());
-        
-        let items = [];
-        res.items.forEach(function({id}){
-            items.push(id);
-        })
-        for(let i=0; i<items.length; i++){
-            const token = items[i];
-            let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${token}/meta`)
+        try{
+            const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner?owner=${address}`)
             .then((res) => res.json());
             
-            meta.token = token;
-            for(let key in meta.image) {
-                for(let url in meta.image[key]){
-                    const imageUrl = meta.image[key][url];
-                    
-                    if(imageUrl.split('/')[0] === 'ipfs:'){
-                        const hash = imageUrl.split('/')[3];
-                        meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
+            let items = [];
+            res.items.forEach(function({id}){
+                items.push(id);
+            })
+            for(let i=0; i<items.length; i++){
+                const token = items[i];
+                let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${token}/meta`)
+                .then((res) => res.json());
+                
+                meta.token = token;
+                for(let key in meta.image) {
+                    for(let url in meta.image[key]){
+                        const imageUrl = meta.image[key][url];
+                        
+                        if(imageUrl.split('/')[0] === 'ipfs:'){
+                            const hash = imageUrl.split('/')[3];
+                            meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
+                        }
+                        else{
+                            meta.imageUrl = imageUrl;
+                        }
                     }
-                    else{
-                        meta.imageUrl = imageUrl;
-                    }
+                    break;
                 }
-                break;
+                
+                setNfts(currentState => [...currentState, meta]); 
             }
-            
-            setNfts(currentState => [...currentState, meta]); 
+        }catch(err){
+
         }
-        
         
     }
 

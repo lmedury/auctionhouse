@@ -1,6 +1,7 @@
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/scss/styles.css';
 import {useState, useEffect} from 'react';
 import { createRaribleSdk } from "@rarible/protocol-ethereum-sdk";
 import Header from './components/Header';
@@ -28,25 +29,6 @@ function App() {
   useEffect(() => {
     
     if(!metamask){
-      /*
-      if(window.ethereum){
-        web3 = new Web3(window.ethereum);
-        const raribleSdk = createRaribleSdk(web3, 'ropsten');
-        //const raribleSdk = createRaribleSdk(new Web3Ethereum({ web3 }), 'ropsten')
-        setSdk(raribleSdk);
-        try{
-          window.ethereum.enable().then(function(){
-            web3.eth.getAccounts((err, accounts) => {
-              setAddress(accounts[0]);
-            })
-            
-          });
-          
-        } catch(error){
-          console.log('Denied');
-        }
-      }
-      setMetamask(true);*/
       const { ethereum } = window;
       if (ethereum && ethereum.isMetaMask) {
           console.log('Ethereum successfully detected!')          
@@ -110,7 +92,7 @@ function App() {
 
   
   return (
-    <div style={{fontFamily:'Montserrat'}}>
+    <div className='dark-theme' style={{fontFamily:'Montserrat'}}>
       <Header changeRoute={setRoute} />
       {content}
       

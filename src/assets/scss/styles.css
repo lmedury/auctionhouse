@@ -1,0 +1,25 @@
+.dark-theme {
+  background-color: #212121;
+  color: white;
+}
+
+.dark-theme .card-class {
+  border: 1px solid orange;
+  background-color: #212121;
+  color: white;
+  text-align: left;
+  height: 100%;
+}
+
+.dark-theme .card-class-center {
+  border: 1px solid orange;
+  background-color: #212121;
+  color: white;
+  text-align: center;
+  height: 100%;
+}
+
+.min-height {
+  min-height: 90vh;
+}
+/*# sourceMappingURL=styles.css.map */

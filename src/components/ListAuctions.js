@@ -48,44 +48,47 @@ export default function ListAuctions(props){
     async function loadTimedAuctions(){
         const auctions = await getTimedAuctions();
         let nfts = [];
-        
-        for(let i=0; i<auctions.length; i++){
-            const token = auctions[i][0];
-            let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${constants.ERC721}:${token}/meta`)
-            .then((res) => res.json());
-            
-            meta.token = token;
-            for(let key in meta.image) {
-                for(let url in meta.image[key]){
-                    const imageUrl = meta.image[key][url];
-                    
-                    if(imageUrl.split('/')[0] === 'ipfs:'){
-                        const hash = imageUrl.split('/')[3];
-                        meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
+        try{
+            for(let i=0; i<auctions.length; i++){
+                const token = auctions[i][0];
+                let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${constants.ERC721}:${token}/meta`)
+                meta = meta.json();
+                console.log(meta);
+                
+                meta.token = token;
+                for(let key in meta.image) {
+                    for(let url in meta.image[key]){
+                        const imageUrl = meta.image[key][url];
+                        
+                        if(imageUrl.split('/')[0] === 'ipfs:'){
+                            const hash = imageUrl.split('/')[3];
+                            meta.imageUrl = `https://ipfs.infura.io/ipfs/${hash}`; 
+                        }
+                        else{
+                            meta.imageUrl = imageUrl;
+                        }
+                        meta.owner = auctions[i][1];
+                        meta.reservePrice = auctions[i][2];
+                        let sec = auctions[i][3];
+                        let d = new Date(0);
+                        d.setUTCMilliseconds(sec);     
+                        d=d.toString();               
+                        meta.deadline = d;
+                        meta.highestBidder = auctions[i][4];
+                        meta.highestBid = auctions[i][5];
+                        meta.isOpen = auctions[i][6];
+                        meta.id = i+1;
+                        meta.likes = Math.floor(Math.random()*10);
+                        
                     }
-                    else{
-                        meta.imageUrl = imageUrl;
-                    }
-                    meta.owner = auctions[i][1];
-                    meta.reservePrice = auctions[i][2];
-                    let sec = auctions[i][3];
-                    let d = new Date(0);
-                    d.setUTCMilliseconds(sec);     
-                    d=d.toString();               
-                    meta.deadline = d;
-                    meta.highestBidder = auctions[i][4];
-                    meta.highestBid = auctions[i][5];
-                    meta.isOpen = auctions[i][6];
-                    meta.id = i+1;
-                    meta.likes = Math.floor(Math.random()*10);
-                    
+                    break;
                 }
-                break;
+                nfts.push(meta);
+                
             }
-            nfts.push(meta);
-            
+        } catch(err) {
+
         }
-        
         setTimedAuctions(nfts.reverse());    
     }
     
@@ -102,7 +105,7 @@ export default function ListAuctions(props){
             <h2><strong>NFT Auctions</strong></h2>
             <Row style={{marginTop:50, marginRight:50}}>
                 <Col lg={3}>
-                    <Card style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                    <Card className='card-class'>
                         <Card.Body>
                             <h5><strong>Timed Auctions: </strong>{auctionCount.timed}</h5>
                             <p><em>Timed auctions don’t have an auctioneer calling the bids – there’s just a bidding window and whoever bids highest during it wins (as long as the reserve’s met of course). You'll know it's a timed auction as the end time will be displaced on the lot page.</em>
@@ -112,8 +115,8 @@ export default function ListAuctions(props){
                     </Card>
                 </Col>
                 <Col lg={3} >
-                    <Card style={{borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
-                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300}}>
+                    <Card className='card-class'>
+                        <Card.Body >
                             <h5><strong>Reserved Auctions: </strong>{auctionCount.reserved}</h5>
                             <p><em>This is an auction where the final bid for an item can be rejected by the seller if it is not high enough to satisfy them. They may set a particular fixed reserve, or they may alter the reserve over the course of the auction in response to the bids placed. Bidders are often unaware of the reserve price.</em>
                                 <br/>Source: <a href="https://www.sensibledevelopment.com/auction-glossary/auction-types/what-is-a-reserve-auction">Link</a>
@@ -122,8 +125,8 @@ export default function ListAuctions(props){
                     </Card>
                 </Col>
                 <Col lg={3}>
-                    <Card style={{borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
-                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300}}>
+                    <Card className='card-class'>
+                        <Card.Body >
                             <h5><strong>Open Auctions: </strong>{auctionCount.open}</h5>
                             <p><em>This is an auction where bidding is public, and every bidder has full knowledge of the value of all the other bids. </em>
                                 <br/>Source: <a href="https://www.sensibledevelopment.com/auction-glossary/auction-types/what-are-open-bid-sealed-bid-auctions">Link</a>
@@ -132,8 +135,8 @@ export default function ListAuctions(props){
                     </Card>
                 </Col>
                 <Col lg={3}>
-                    <Card style={{borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
-                        <Card.Body style={{backgroundColor:constants.COLORS.GREY, textAlign:'left', height:300}}>
+                    <Card className='card-class'>
+                        <Card.Body >
                             <h5><strong>Vickery Auctions: </strong>{auctionCount.vickery}</h5>
                             <p><em>A Vickrey auction is a type of sealed-bid auction. Bidders submit written bids without knowing the bid of the other people in the auction. The highest bidder wins but the price paid is the second-highest bid. </em>
                                 <br/>Source: <a href="https://en.wikipedia.org/wiki/Vickrey_auction">Link</a>
