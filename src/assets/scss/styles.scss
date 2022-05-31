@@ -21,6 +21,18 @@ $orange: orange;
     }
 }
 
+.light-theme {
+    background-color: $white;
+    color: $dark;
+    .card-class {
+        @include card-class($light, $dark, $orange, left);
+    }
+    .card-class-center{
+        @include card-class($light, $dark, $orange, center);
+    }
+}
+
+
 .min-height {
     min-height: 90vh;
 }
