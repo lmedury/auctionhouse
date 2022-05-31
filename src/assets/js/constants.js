@@ -1,0 +1,1 @@
+export const RARIBLE_DEV_LINK = "https://dev-api.rarible.org/v0.1"

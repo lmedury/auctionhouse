@@ -5,6 +5,7 @@ import {getTimedAuctions} from '../ethereum/web3';
 import auctioned from '../assets/img/auctioned.png';
 import sold from '../assets/img/Sold.png'
 import '../App.css'
+import { RARIBLE_DEV_LINK } from '../assets/js/constants';
 
 export default function MyItems(props) {
     
@@ -17,8 +18,9 @@ export default function MyItems(props) {
 
     async function getItems(){
         try{
-            const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner?owner=${address}`)
+            const res = await fetch(`${RARIBLE_DEV_LINK}/items/byOwner?owner=ETHEREUM:${address}`)
             .then((res) => res.json());
+            console.log(res);
             
             let items = [];
             res.items.forEach(function({id}){
@@ -26,7 +28,7 @@ export default function MyItems(props) {
             })
             for(let i=0; i<items.length; i++){
                 const token = items[i];
-                let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${token}/meta`)
+                let meta = await fetch(`${RARIBLE_DEV_LINK}/ethereum/nft/items/${token}/meta`)
                 .then((res) => res.json());
                 
                 meta.token = token;

@@ -5,6 +5,7 @@ import { listAuctions, getTimedAuctions, bidOnTimedAuction, closeTimedAuction } 
 import loader from '../assets/img/loader.svg';
 import soldicon from '../assets/img/Sold.png';
 import likes from '../assets/img/likes.png';
+import { RARIBLE_DEV_LINK } from '../assets/js/constants';
 
 export default function ListAuctions(props){
     
@@ -51,9 +52,8 @@ export default function ListAuctions(props){
         try{
             for(let i=0; i<auctions.length; i++){
                 const token = auctions[i][0];
-                let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${constants.ERC721}:${token}/meta`)
-                meta = meta.json();
-                console.log(meta);
+                let meta = await fetch(`${RARIBLE_DEV_LINK}/items/ETHEREUM:${constants.ERC721}:${token}`)
+                meta = await meta.json();
                 
                 meta.token = token;
                 for(let key in meta.image) {
@@ -180,7 +180,7 @@ export default function ListAuctions(props){
 
                 <div  style={{textAlign:'left'}} >
 
-                  <Card style={{width:'43vw', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:constants.COLORS.ORANGE, borderWidth:3}}>
+                  <Card className='card-class' style={{width:'43vw', marginTop: 20}}>
                     <Card.Body>
                     {item.isOpen ? null
                     : <h5 style={{fontFamily:'Montserrat', color:'green', marginTop:10}}>

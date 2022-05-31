@@ -1,10 +1,11 @@
 import Constants from './contants';
 import EIP712 from './EIP712'
+import { RARIBLE_DEV_LINK } from '../assets/js/constants';
 
 export async function encodeOrder(address, tokenId) {
     let body = await prepareOrder(address, tokenId);
     
-    const post = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/order/encoder/order`, {
+    const post = await fetch(`${RARIBLE_DEV_LINK}/ethereum/order/encoder/order`, {
         method: 'POST',
         headers: {
         "Content-Type": "application/json",
@@ -62,7 +63,7 @@ export async function sendOrder(address, tokenId, signature) {
    
     let post;
     try{
-        const raribleOrderUrl = "https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders";
+        const raribleOrderUrl = `${RARIBLE_DEV_LINK}/ethereum/order/orders`;
         const raribleOrderResult = await fetch(raribleOrderUrl, {
             method: "POST",
             headers: {

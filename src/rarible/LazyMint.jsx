@@ -1,7 +1,8 @@
 import Constants from './contants';
+import { RARIBLE_DEV_LINK } from '../assets/js/constants';
 
 export async function getToken (account) {
-    const res = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/collections/${Constants.ERC721}/generate_token_id?minter=${account}`)
+    const res = await fetch(`${RARIBLE_DEV_LINK}/ethereum/nft/collections/${Constants.ERC721}/generate_token_id?minter=${account}`)
     .then((res) => res.json());
     let token = res.tokenId;
     return token;
@@ -96,7 +97,7 @@ export async function signTypedData(web3Provider, from, dataStructure) {
 
 export async function putLazyMint(form) {
    
-  const raribleMintUrl = "https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/mints"
+  const raribleMintUrl = `${RARIBLE_DEV_LINK}/ethereum/nft/mints`
   let raribleMintResult = await fetch(raribleMintUrl, {
     method: "POST",
     headers: {

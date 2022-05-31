@@ -6,6 +6,7 @@ import constants from "../constants";
 import {getTimedAuctions} from '../ethereum/web3';
 import error from '../assets/img/error.jpg';
 import loader from '../assets/img/loader.svg';
+import { RARIBLE_DEV_LINK } from "../assets/js/constants";
 
 
 export default function PurchasedNFTs(props){
@@ -31,7 +32,7 @@ export default function PurchasedNFTs(props){
             const token = auctions[i][0];
             if(auctions[i][4]!==props.address || auctions[i][6] === true) continue;
             
-            let meta = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${constants.ERC721}:${token}/meta`)
+            let meta = await fetch(`${RARIBLE_DEV_LINK}/items/ETHEREUM:${constants.ERC721}:${token}`)
             .then((res) => res.json());
             
             meta.token = token;
@@ -84,7 +85,7 @@ export default function PurchasedNFTs(props){
 
     async function getSellOrder(token){
         let collectionContract = constants.ERC721;
-        let sellOrders = await fetch(`https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders/sell/byItem?contract=${collectionContract}&tokenId=${token}&sort=LAST_UPDATE`);
+        let sellOrders = await fetch(`${RARIBLE_DEV_LINK}/ethereum/order/orders/sell/byItem?contract=${collectionContract}&tokenId=${token}&sort=LAST_UPDATE`);
         sellOrders = await sellOrders.json();
         if(sellOrders.orders.length>0){
             sellOrders = sellOrders.orders[0];
@@ -172,7 +173,7 @@ export default function PurchasedNFTs(props){
 
                 <div  style={{textAlign:'left'}} >
 
-                  <Card style={{ width: '40vw',height:'100%', backgroundColor:constants.COLORS.GREY, marginTop: 20, borderColor:'green', borderWidth:5}}>
+                  <Card className="card-class" style={{ width: '40vw',height:'100%', marginTop: 20}}>
                     <Card.Body>
                       
                       <div style={{width:'50%', display:'inline-block', verticalAlign:'top'}}>
